@@ -150,13 +150,18 @@ function Index() {
               <article key={team.name} className="team-card group">
                 <div className="team-media" aria-label={`${team.name} fotoğrafı`}>
                   {team.photo ? (
-                    <img
-                      src={team.photo.url}
-                      alt={`${team.name} takım fotoğrafı`}
-                      loading="lazy"
-                      decoding="async"
-                      className={`team-photo ${team.photoFit === "contain" ? "object-contain" : "object-cover"}`}
-                    />
+                    <>
+                      {team.photoFit === "contain" && (
+                        <img src={team.photo.url} alt="" aria-hidden="true" loading="lazy" decoding="async" className="team-photo-backdrop" />
+                      )}
+                      <img
+                        src={team.photo.url}
+                        alt={`${team.name} takım fotoğrafı`}
+                        loading="lazy"
+                        decoding="async"
+                        className={`team-photo ${team.photoFit === "contain" ? "object-contain" : "object-cover"}`}
+                      />
+                    </>
                   ) : (
                     <>
                       <div className="team-media-mark"><Camera className="size-5" /></div>
