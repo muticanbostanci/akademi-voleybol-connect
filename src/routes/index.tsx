@@ -20,21 +20,27 @@ import { useState } from "react";
 
 import heroImage from "@/assets/akademi-volleyball-hero.jpg";
 import logoAsset from "@/assets/akademi-spor-kulubu-logo.png.asset.json";
+import takimKucukKiz from "@/assets/takim-kucuk-kiz.png.asset.json";
+import takimGencYildiz from "@/assets/takim-genc-yildiz.png.asset.json";
+import takimYildiz from "@/assets/takim-yildiz.png.asset.json";
+import takimMidiler from "@/assets/takim-midiler.png.asset.json";
+import takimMiniler from "@/assets/takim-miniler.png.asset.json";
+import takimMinisler from "@/assets/takim-minisler.png.asset.json";
 
 const WHATSAPP_URL =
   "https://wa.me/905336802206?text=Merhaba,%20kulübünüz%20ve%20voleybol%20antrenmanları%20hakkında%20bilgi%20almak%20istiyorum.";
 const INSTAGRAM_URL = "https://www.instagram.com/akademi.sporkulubu/";
-const FIXTURE_URL = "https://tvf.org.tr/ligler/";
+const FIXTURE_URL = "https://ankara.voleyboliltemsilciligi.com/";
 const MAPS_URL =
   "https://www.google.com/maps/search/?api=1&query=Kaz%C4%B1m+Orbay%2C+342.+Cd.+No%3A46%2C+06630+Mamak%2FAnkara";
 
 const teams = [
-  { name: "Küçük Kız Takımı", code: "01", note: "Takım ruhu, teknik gelişim ve müsabaka deneyimi" },
-  { name: "Genç Yıldız", code: "02", note: "Güçlü altyapı, disiplinli oyun ve hedef odaklı gelişim" },
-  { name: "Yıldız Takım", code: "03", note: "İleri seviye teknik, taktik ve lig hazırlığı" },
-  { name: "Midiler", code: "04", note: "Temel voleybol becerileri ve takım kültürü" },
-  { name: "Miniler", code: "05", note: "Hareket, koordinasyon ve voleybolla ilk adım" },
-  { name: "Minişler", code: "06", note: "Oyunla öğrenme, özgüven ve spor sevgisi" },
+  { name: "Küçük Kız Takımı", code: "01", note: "Takım ruhu, teknik gelişim ve müsabaka deneyimi", photo: takimKucukKiz },
+  { name: "Genç Yıldız", code: "02", note: "Güçlü altyapı, disiplinli oyun ve hedef odaklı gelişim", photo: takimGencYildiz },
+  { name: "Yıldız Takım", code: "03", note: "İleri seviye teknik, taktik ve lig hazırlığı", photo: takimYildiz },
+  { name: "Midiler", code: "04", note: "Temel voleybol becerileri ve takım kültürü", photo: takimMidiler },
+  { name: "Miniler", code: "05", note: "Hareket, koordinasyon ve voleybolla ilk adım", photo: takimMiniler },
+  { name: "Minişler", code: "06", note: "Oyunla öğrenme, özgüven ve spor sevgisi", photo: takimMinisler },
 ];
 
 export const Route = createFileRoute("/")({
@@ -69,13 +75,13 @@ function WhatsAppIcon({ className = "size-5" }: { className?: string }) {
 function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="absolute inset-x-0 top-0 z-40 border-b border-border bg-header-glass backdrop-blur-md">
+    <header className="site-header absolute inset-x-0 top-0 z-40 border-b border-hero-line">
       <div className="mx-auto grid h-20 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 lg:h-24 lg:px-8">
         <a href="#top" className="flex min-w-0 items-center gap-3" aria-label="Akademi Spor Kulübü ana sayfa">
-          <img src={logoAsset.url} alt="Akademi Spor Kulübü" className="h-16 w-24 shrink-0 object-contain lg:h-20 lg:w-32" />
+          <img src={logoAsset.url} alt="Akademi Spor Kulübü" className="logo-glow h-16 w-24 shrink-0 object-contain lg:h-20 lg:w-32" />
           <div className="hidden min-w-0 sm:block">
-            <strong className="block font-display text-sm tracking-wide text-foreground lg:text-base">AKADEMİ SPOR KULÜBÜ</strong>
-            <span className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground"><Volleyball className="size-3.5" /> VOLEYBOL</span>
+            <strong className="block font-display text-sm tracking-wide text-hero-foreground lg:text-base">AKADEMİ SPOR KULÜBÜ</strong>
+            <span className="flex items-center gap-1.5 text-xs font-semibold text-hero-muted"><Volleyball className="size-3.5" /> VOLEYBOL</span>
           </div>
         </a>
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Ana navigasyon">
@@ -142,12 +148,18 @@ function Index() {
           <div className="mt-12 grid gap-px overflow-hidden border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
             {teams.map((team) => (
               <article key={team.name} className="team-card group">
-                <div className="team-media" aria-label={`${team.name} fotoğraf alanı`}>
-                  <div className="team-media-mark"><Camera className="size-5" /></div>
-                  <div>
-                    <strong>TAKIM FOTOĞRAFI</strong>
-                    <span>{team.name}</span>
-                  </div>
+                <div className="team-media" aria-label={`${team.name} fotoğrafı`}>
+                  {team.photo ? (
+                    <img src={team.photo.url} alt={`${team.name} takım fotoğrafı`} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                  ) : (
+                    <>
+                      <div className="team-media-mark"><Camera className="size-5" /></div>
+                      <div>
+                        <strong>TAKIM FOTOĞRAFI</strong>
+                        <span>{team.name}</span>
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="flex items-start justify-between">
                   <span className="team-number">{team.code}</span>
@@ -206,7 +218,7 @@ function Index() {
 
       <footer className="border-t border-hero-line bg-section-dark text-hero-muted">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 md:grid-cols-[1.5fr_1fr_1fr] lg:px-8">
-          <div className="flex items-center gap-4"><img src={logoAsset.url} alt="Akademi Spor Kulübü logosu" className="h-20 w-28 object-contain" /><p className="max-w-xs text-sm">Voleybolun birleştirici gücüyle geleceğin sporcularını yetiştiriyoruz.</p></div>
+          <div className="flex items-center gap-4"><img src={logoAsset.url} alt="Akademi Spor Kulübü logosu" className="logo-glow h-20 w-28 object-contain" /><p className="max-w-xs text-sm">Voleybolun birleştirici gücüyle geleceğin sporcularını yetiştiriyoruz.</p></div>
           <div><strong className="footer-title">HIZLI BAĞLANTILAR</strong><nav className="mt-4 grid gap-2 text-sm"><a href="#takimlar">Takımlarımız</a><a href="#salon">Salonumuz</a><a href="#iletisim">İletişim</a></nav></div>
           <div><strong className="footer-title">BİZİ TAKİP EDİN</strong><div className="mt-4 flex gap-3"><a className="social-icon" href={INSTAGRAM_URL} target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram /></a><a className="social-icon" href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="WhatsApp"><WhatsAppIcon /></a></div></div>
         </div>
