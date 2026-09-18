@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
   CalendarDays,
+  Camera,
   Clock3,
   ExternalLink,
   Instagram,
@@ -25,7 +26,7 @@ const WHATSAPP_URL =
 const INSTAGRAM_URL = "https://www.instagram.com/akademi.sporkulubu/";
 const FIXTURE_URL = "https://tvf.org.tr/ligler/";
 const MAPS_URL =
-  "https://www.google.com/maps/search/?api=1&query=%C3%87a%C4%9Fr%C4%B1bey+Anadolu+Lisesi+Spor+Salonu";
+  "https://www.google.com/maps/search/?api=1&query=Kaz%C4%B1m+Orbay%2C+342.+Cd.+No%3A46%2C+06630+Mamak%2FAnkara";
 
 const teams = [
   { name: "Küçük Kız Takımı", code: "01", note: "Takım ruhu, teknik gelişim ve müsabaka deneyimi" },
@@ -68,13 +69,13 @@ function WhatsAppIcon({ className = "size-5" }: { className?: string }) {
 function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="absolute inset-x-0 top-0 z-40 border-b border-hero-line bg-hero-glass backdrop-blur-md">
+    <header className="absolute inset-x-0 top-0 z-40 border-b border-border bg-header-glass backdrop-blur-md">
       <div className="mx-auto grid h-20 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 lg:h-24 lg:px-8">
         <a href="#top" className="flex min-w-0 items-center gap-3" aria-label="Akademi Spor Kulübü ana sayfa">
           <img src={logoAsset.url} alt="Akademi Spor Kulübü" className="h-16 w-24 shrink-0 object-contain lg:h-20 lg:w-32" />
           <div className="hidden min-w-0 sm:block">
-            <strong className="block font-display text-sm tracking-wide text-hero-foreground lg:text-base">AKADEMİ SPOR KULÜBÜ</strong>
-            <span className="flex items-center gap-1.5 text-xs font-semibold text-hero-muted"><Volleyball className="size-3.5" /> VOLEYBOL</span>
+            <strong className="block font-display text-sm tracking-wide text-foreground lg:text-base">AKADEMİ SPOR KULÜBÜ</strong>
+            <span className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground"><Volleyball className="size-3.5" /> VOLEYBOL</span>
           </div>
         </a>
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Ana navigasyon">
@@ -125,7 +126,7 @@ function Index() {
             <div className="mt-9 flex flex-wrap gap-x-8 gap-y-3 border-t border-hero-line pt-6 text-xs font-bold uppercase text-hero-muted">
               <span className="flex items-center gap-2"><Users className="size-4 text-brand-gold" /> 6 Yaş Grubu</span>
               <span className="flex items-center gap-2"><Trophy className="size-4 text-brand-gold" /> Lisanslı Sporcular</span>
-              <span className="flex items-center gap-2"><MapPin className="size-4 text-brand-gold" /> İstanbul</span>
+              <span className="flex items-center gap-2"><MapPin className="size-4 text-brand-gold" /> Ankara</span>
             </div>
           </div>
         </div>
@@ -141,6 +142,13 @@ function Index() {
           <div className="mt-12 grid gap-px overflow-hidden border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
             {teams.map((team) => (
               <article key={team.name} className="team-card group">
+                <div className="team-media" aria-label={`${team.name} fotoğraf alanı`}>
+                  <div className="team-media-mark"><Camera className="size-5" /></div>
+                  <div>
+                    <strong>TAKIM FOTOĞRAFI</strong>
+                    <span>{team.name}</span>
+                  </div>
+                </div>
                 <div className="flex items-start justify-between">
                   <span className="team-number">{team.code}</span>
                   <Volleyball className="size-7 text-brand-red transition-transform duration-300 group-hover:rotate-12" />
@@ -164,7 +172,7 @@ function Index() {
             <h2 className="mt-3 font-display text-4xl font-black leading-tight text-hero-foreground sm:text-5xl">OYUNUN KALBİ<br />ÇAĞRIBEY'DE ATIYOR</h2>
             <p className="mt-6 max-w-lg leading-relaxed text-hero-muted">Tüm takım antrenmanlarımız güvenli, ulaşılabilir ve tam donanımlı Çağrıbey Anadolu Lisesi Spor Salonu'nda gerçekleşiyor.</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="info-line"><MapPin /><span><small>Salon</small>Çağrıbey Anadolu Lisesi<br />Spor Salonu</span></div>
+              <div className="info-line"><MapPin /><span><small>Adres</small>Kazım Orbay, 342. Cd. No:46<br />06630 Mamak / Ankara</span></div>
               <div className="info-line"><Clock3 /><span><small>Saatler</small>Yaş grubuna göre<br />WhatsApp'tan öğrenin</span></div>
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -176,7 +184,7 @@ function Index() {
             <div className="map-grid" />
             <div className="map-rings"><span /><span /><span /></div>
             <MapPin className="relative z-10 size-14 fill-brand-red text-brand-red" />
-            <div className="relative z-10 mt-4 text-center"><strong>Çağrıbey Anadolu Lisesi</strong><span>Spor Salonu</span></div>
+            <div className="relative z-10 mt-4 px-6 text-center"><strong>Mamak / Ankara</strong><span>Kazım Orbay, 342. Cd. No:46, 06630</span></div>
             <div className="map-action">Google Haritalar'da Aç <ExternalLink className="size-4" /></div>
           </a>
         </div>
