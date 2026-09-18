@@ -35,11 +35,11 @@ const MAPS_URL =
   "https://www.google.com/maps/search/?api=1&query=Kaz%C4%B1m+Orbay%2C+342.+Cd.+No%3A46%2C+06630+Mamak%2FAnkara";
 
 const teams = [
-  { name: "Küçük Kız Takımı", code: "01", note: "Takım ruhu, teknik gelişim ve müsabaka deneyimi", photo: takimKucukKiz },
+  { name: "Küçük Kız Takımı", code: "01", note: "Takım ruhu, teknik gelişim ve müsabaka deneyimi", photo: takimKucukKiz, photoFit: "contain" },
   { name: "Genç Yıldız", code: "02", note: "Güçlü altyapı, disiplinli oyun ve hedef odaklı gelişim", photo: takimGencYildiz },
   { name: "Yıldız Takım", code: "03", note: "İleri seviye teknik, taktik ve lig hazırlığı", photo: takimYildiz },
   { name: "Midiler", code: "04", note: "Temel voleybol becerileri ve takım kültürü", photo: takimMidiler },
-  { name: "Miniler", code: "05", note: "Hareket, koordinasyon ve voleybolla ilk adım", photo: takimMiniler },
+  { name: "Miniler", code: "05", note: "Hareket, koordinasyon ve voleybolla ilk adım", photo: takimMiniler, photoFit: "contain" },
   { name: "Minişler", code: "06", note: "Oyunla öğrenme, özgüven ve spor sevgisi", photo: takimMinisler },
 ];
 
@@ -150,7 +150,18 @@ function Index() {
               <article key={team.name} className="team-card group">
                 <div className="team-media" aria-label={`${team.name} fotoğrafı`}>
                   {team.photo ? (
-                    <img src={team.photo.url} alt={`${team.name} takım fotoğrafı`} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                    <>
+                      {team.photoFit === "contain" && (
+                        <img src={team.photo.url} alt="" aria-hidden="true" loading="lazy" decoding="async" className="team-photo-backdrop" />
+                      )}
+                      <img
+                        src={team.photo.url}
+                        alt={`${team.name} takım fotoğrafı`}
+                        loading="lazy"
+                        decoding="async"
+                        className={`team-photo ${team.photoFit === "contain" ? "object-contain" : "object-cover"}`}
+                      />
+                    </>
                   ) : (
                     <>
                       <div className="team-media-mark"><Camera className="size-5" /></div>
