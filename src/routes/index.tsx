@@ -38,7 +38,7 @@ const teams = [
   { name: "Küçük Kız Takımı", code: "01", note: "Takım ruhu, teknik gelişim ve müsabaka deneyimi", photo: takimKucukKiz },
   { name: "Genç Yıldız", code: "02", note: "Güçlü altyapı, disiplinli oyun ve hedef odaklı gelişim", photo: takimGencYildiz },
   { name: "Yıldız Takım", code: "03", note: "İleri seviye teknik, taktik ve lig hazırlığı", photo: takimYildiz },
-  { name: "Midiler", code: "04", note: "Temel voleybol becerileri ve takım kültürü", photo: takimMidiler, containPhoto: true },
+  { name: "Midiler", code: "04", note: "Temel voleybol becerileri ve takım kültürü", photo: takimMidiler },
   { name: "Miniler", code: "05", note: "Hareket, koordinasyon ve voleybolla ilk adım", photo: takimMiniler },
   { name: "Minişler", code: "06", note: "Oyunla öğrenme, özgüven ve spor sevgisi", photo: takimMinisler },
 ];
@@ -148,15 +148,9 @@ function Index() {
           <div className="mt-12 grid gap-px overflow-hidden border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
             {teams.map((team) => (
               <article key={team.name} className="team-card group">
-                <div className="team-media team-media--photo" aria-label={`${team.name} fotoğrafı`}>
+                <div className="team-media" aria-label={`${team.name} fotoğrafı`}>
                   {team.photo ? (
-                    <img
-                      src={team.photo.url}
-                      alt={`${team.name} takım fotoğrafı`}
-                      loading="lazy"
-                      decoding="async"
-                      className={`team-photo ${team.containPhoto ? "team-photo--contain" : ""}`}
-                    />
+                    <img src={team.photo.url} alt={`${team.name} takım fotoğrafı`} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
                   ) : (
                     <>
                       <div className="team-media-mark"><Camera className="size-5" /></div>
