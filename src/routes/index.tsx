@@ -18,14 +18,14 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-import heroImage from "@/assets/akademi-volleyball-hero.jpg";
-import logoAsset from "@/assets/akademi-spor-kulubu-logo.png.asset.json";
-import takimKucukKiz from "@/assets/takim-kucuk-kiz.png.asset.json";
-import takimGencYildiz from "@/assets/takim-genc-yildiz.png.asset.json";
-import takimYildiz from "@/assets/takim-yildiz.png.asset.json";
-import takimMidiler from "@/assets/takim-midiler.png.asset.json";
-import takimMiniler from "@/assets/takim-miniler.png.asset.json";
-import takimMinisler from "@/assets/takim-minisler.png.asset.json";
+const heroImage = "/akademi-volleyball-hero.jpg";
+const logoAsset = { url: "/akademi-spor-kulubu-logo.png" };
+const takimKucukKiz = { url: "/takim-kucuk-kiz.png" };
+const takimGencYildiz = { url: "/takim-genc-yildiz.png" };
+const takimYildiz = { url: "/takim-yildiz.png" };
+const takimMidiler = { url: "/takim-midiler.png" };
+const takimMiniler = { url: "/takim-miniler.png" };
+const takimMinisler = { url: "/takim-minisler.png" };
 
 const WHATSAPP_URL =
   "https://wa.me/905336802206?text=Merhaba,%20kulübünüz%20ve%20voleybol%20antrenmanları%20hakkında%20bilgi%20almak%20istiyorum.";
