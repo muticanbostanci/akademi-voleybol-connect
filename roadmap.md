@@ -1,8 +1,8 @@
 # Yol Haritası
 
-- [ ] JSON tabanlı otomatik hero kaydırıcısı
-- [ ] JSON tabanlı gelecek ve son maç kartları
-- [ ] Takımlar açılır menüsü ve kategori listesi
-- [ ] 11 takımın ayrı kadro sayfası
-- [ ] Mobil/masaüstü ve derleme doğrulaması
-- [ ] Güncel kaynak ZIP arşivi
+- [x] JSON tabanlı otomatik hero kaydırıcısı
+- [x] JSON tabanlı gelecek ve son maç kartları
+- [x] Takımlar açılır menüsü ve kategori listesi
+- [x] 11 takımın ayrı kadro sayfası
+- [x] Mobil/masaüstü ve derleme doğrulaması
+- [x] Güncel kaynak ZIP arşivi
