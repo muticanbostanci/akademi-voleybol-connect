@@ -1,0 +1,13 @@
+[
+  { "slug": "superlig-genc-takim", "name": "Süperlig Genç Takım", "league": "Süperlig", "image": "/takim-genc-yildiz.png", "description": "Genç sporcular için ileri seviye teknik, taktik ve müsabaka gelişimi." },
+  { "slug": "superlig-yildiz-takim", "name": "Süperlig Yıldız Takım", "league": "Süperlig", "image": "/takim-yildiz.png", "description": "Takım disiplini ve hedef odaklı lig hazırlığı." },
+  { "slug": "superlig-kucuk-takim", "name": "Süperlig Küçük Takım", "league": "Süperlig", "image": "/takim-kucuk-kiz.png", "description": "Teknik gelişim, koordinasyon ve müsabaka deneyimi." },
+  { "slug": "1-lig-yildiz-takim", "name": "1. Lig Yıldız Takım", "league": "1. Lig", "image": "/takim-yildiz.png", "description": "Sağlam altyapı ve düzenli maç temposuyla gelişim." },
+  { "slug": "1-lig-kucuk-a-takim", "name": "1. Lig Küçük A Takım", "league": "1. Lig", "image": "/takim-kucuk-kiz.png", "description": "Takım ruhu ve temel oyun prensipleri." },
+  { "slug": "1-lig-kucuk-b-takim", "name": "1. Lig Küçük B Takım", "league": "1. Lig", "image": "/takim-kucuk-kiz.png", "description": "Temel becerilerden müsabaka deneyimine uzanan program." },
+  { "slug": "1-lig-midi-a-takim", "name": "1. Lig Midi A Takım", "league": "1. Lig", "image": "/takim-midiler.png", "description": "Oyun bilgisi, koordinasyon ve takım kültürü." },
+  { "slug": "1-lig-midi-b-takim", "name": "1. Lig Midi B Takım", "league": "1. Lig", "image": "/takim-midiler.png", "description": "Düzenli antrenmanla bireysel ve takım gelişimi." },
+  { "slug": "1-lig-mini-a-takim", "name": "1. Lig Mini A Takım", "league": "1. Lig", "image": "/takim-miniler.png", "description": "Voleybolun temel hareketleriyle güvenli başlangıç." },
+  { "slug": "1-lig-mini-b-takim", "name": "1. Lig Mini B Takım", "league": "1. Lig", "image": "/takim-minisler.png", "description": "Oyunla öğrenme, özgüven ve spor sevgisi." },
+  { "slug": "spor-okullarimiz", "name": "Spor Okullarımız", "league": "Voleybol Eğitimi", "image": "/takim-miniler.png", "description": "Voleybola başlamak isteyen çocuklar için yaşa uygun eğitim." }
+]
