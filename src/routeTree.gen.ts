@@ -10,33 +10,60 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TakimlarRouteImport } from './routes/takimlar'
+import { Route as TakimlarIndexRouteImport } from './routes/takimlar.index'
+import { Route as TakimlarSlugRouteImport } from './routes/takimlar.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TakimlarRoute = TakimlarRouteImport.update({
+  id: '/takimlar',
+  path: '/takimlar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TakimlarIndexRoute = TakimlarIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TakimlarRoute,
+} as any)
+const TakimlarSlugRoute = TakimlarSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => TakimlarRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/takimlar': typeof TakimlarRouteWithChildren
+  '/takimlar/$slug': typeof TakimlarSlugRoute
+  '/takimlar/': typeof TakimlarIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/takimlar/$slug': typeof TakimlarSlugRoute
+  '/takimlar': typeof TakimlarIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/takimlar': typeof TakimlarRouteWithChildren
+  '/takimlar/$slug': typeof TakimlarSlugRoute
+  '/takimlar/': typeof TakimlarIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/takimlar' | '/takimlar/$slug' | '/takimlar/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/takimlar/$slug' | '/takimlar'
+  id: '__root__' | '/' | '/takimlar' | '/takimlar/$slug' | '/takimlar/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TakimlarRoute: typeof TakimlarRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +75,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/takimlar': {
+      id: '/takimlar'
+      path: '/takimlar'
+      fullPath: '/takimlar'
+      preLoaderRoute: typeof TakimlarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/takimlar/': {
+      id: '/takimlar/'
+      path: '/'
+      fullPath: '/takimlar/'
+      preLoaderRoute: typeof TakimlarIndexRouteImport
+      parentRoute: typeof TakimlarRoute
+    }
+    '/takimlar/$slug': {
+      id: '/takimlar/$slug'
+      path: '/$slug'
+      fullPath: '/takimlar/$slug'
+      preLoaderRoute: typeof TakimlarSlugRouteImport
+      parentRoute: typeof TakimlarRoute
+    }
   }
 }
 
+interface TakimlarRouteChildren {
+  TakimlarSlugRoute: typeof TakimlarSlugRoute
+  TakimlarIndexRoute: typeof TakimlarIndexRoute
+}
+
+const TakimlarRouteChildren: TakimlarRouteChildren = {
+  TakimlarSlugRoute: TakimlarSlugRoute,
+  TakimlarIndexRoute: TakimlarIndexRoute,
+}
+
+const TakimlarRouteWithChildren = TakimlarRoute._addFileChildren(
+  TakimlarRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TakimlarRoute: TakimlarRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
