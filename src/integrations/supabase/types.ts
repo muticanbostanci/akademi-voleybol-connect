@@ -14,7 +14,155 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      matches: {
+        Row: {
+          away_logo: string | null
+          away_name: string
+          home_logo: string | null
+          home_name: string
+          label: string
+          match_date: string
+          match_time: string
+          score: string
+          sets: string
+          slot: string
+          updated_at: string
+          venue: string
+        }
+        Insert: {
+          away_logo?: string | null
+          away_name?: string
+          home_logo?: string | null
+          home_name?: string
+          label?: string
+          match_date?: string
+          match_time?: string
+          score?: string
+          sets?: string
+          slot: string
+          updated_at?: string
+          venue?: string
+        }
+        Update: {
+          away_logo?: string | null
+          away_name?: string
+          home_logo?: string | null
+          home_name?: string
+          label?: string
+          match_date?: string
+          match_time?: string
+          score?: string
+          sets?: string
+          slot?: string
+          updated_at?: string
+          venue?: string
+        }
+        Relationships: []
+      }
+      players: {
+        Row: {
+          created_at: string
+          first_name: string
+          id: string
+          image_url: string | null
+          jersey_number: string
+          last_name: string
+          sort_order: number
+          team_slug: string
+        }
+        Insert: {
+          created_at?: string
+          first_name?: string
+          id?: string
+          image_url?: string | null
+          jersey_number?: string
+          last_name?: string
+          sort_order?: number
+          team_slug: string
+        }
+        Update: {
+          created_at?: string
+          first_name?: string
+          id?: string
+          image_url?: string | null
+          jersey_number?: string
+          last_name?: string
+          sort_order?: number
+          team_slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "players_team_slug_fkey"
+            columns: ["team_slug"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
+      slides: {
+        Row: {
+          created_at: string
+          description: string
+          eyebrow: string
+          id: string
+          image_url: string
+          position: string
+          sort_order: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          eyebrow?: string
+          id?: string
+          image_url: string
+          position?: string
+          sort_order?: number
+          title?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          eyebrow?: string
+          id?: string
+          image_url?: string
+          position?: string
+          sort_order?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      teams: {
+        Row: {
+          description: string
+          image_url: string | null
+          league: string
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          description?: string
+          image_url?: string | null
+          league?: string
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          description?: string
+          image_url?: string | null
+          league?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
