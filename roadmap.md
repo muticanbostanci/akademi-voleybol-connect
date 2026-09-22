@@ -1,8 +1,10 @@
-# Yol Haritası
+# Akademi Spor Kulübü — Görevler
 
-- [x] JSON tabanlı otomatik hero kaydırıcısı
-- [x] JSON tabanlı gelecek ve son maç kartları
-- [x] Takımlar açılır menüsü ve kategori listesi
-- [x] 11 takımın ayrı kadro sayfası
-- [x] Mobil/masaüstü ve derleme doğrulaması
-- [x] Güncel kaynak ZIP arşivi
+- [x] Landing page (WhatsApp odaklı, form yok)
+- [x] Hero slider, Maç Merkezi, 11 sabit takım, kadro sayfaları
+- [x] Yönetici girişi (/admin, şifreli oturum)
+- [x] Takım kapak fotoğrafı yükleme
+- [x] Slider görseli ekleme / kaldırma
+- [x] Oyuncu ekleme (fotoğraf, isim, forma no) / kaldırma
+- [x] Maç & skor paneli
+- [x] Veriler ve görseller Lovable Cloud'da saklanıyor

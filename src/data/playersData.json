@@ -1,8 +1,0 @@
-{
-  "default": [
-    { "number": "00", "firstName": "Oyuncu", "lastName": "Adı Soyadı", "image": "/akademi-spor-kulubu-logo.png" },
-    { "number": "00", "firstName": "Oyuncu", "lastName": "Adı Soyadı", "image": "/akademi-spor-kulubu-logo.png" },
-    { "number": "00", "firstName": "Oyuncu", "lastName": "Adı Soyadı", "image": "/akademi-spor-kulubu-logo.png" },
-    { "number": "00", "firstName": "Oyuncu", "lastName": "Adı Soyadı", "image": "/akademi-spor-kulubu-logo.png" }
-  ]
-}

@@ -10,13 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as TakimlarRouteImport } from './routes/takimlar'
 import { Route as TakimlarIndexRouteImport } from './routes/takimlar.index'
 import { Route as TakimlarSlugRouteImport } from './routes/takimlar.$slug'
+import { Route as ApiPublicMediaSplatRouteImport } from './routes/api/public/media.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TakimlarRoute = TakimlarRouteImport.update({
@@ -34,36 +41,62 @@ const TakimlarSlugRoute = TakimlarSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => TakimlarRoute,
 } as any)
+const ApiPublicMediaSplatRoute = ApiPublicMediaSplatRouteImport.update({
+  id: '/api/public/media/$',
+  path: '/api/public/media/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/takimlar': typeof TakimlarRouteWithChildren
   '/takimlar/$slug': typeof TakimlarSlugRoute
   '/takimlar/': typeof TakimlarIndexRoute
+  '/api/public/media/$': typeof ApiPublicMediaSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/takimlar/$slug': typeof TakimlarSlugRoute
   '/takimlar': typeof TakimlarIndexRoute
+  '/api/public/media/$': typeof ApiPublicMediaSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/takimlar': typeof TakimlarRouteWithChildren
   '/takimlar/$slug': typeof TakimlarSlugRoute
   '/takimlar/': typeof TakimlarIndexRoute
+  '/api/public/media/$': typeof ApiPublicMediaSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/takimlar' | '/takimlar/$slug' | '/takimlar/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/takimlar'
+    | '/takimlar/$slug'
+    | '/takimlar/'
+    | '/api/public/media/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/takimlar/$slug' | '/takimlar'
-  id: '__root__' | '/' | '/takimlar' | '/takimlar/$slug' | '/takimlar/'
+  to: '/' | '/admin' | '/takimlar/$slug' | '/takimlar' | '/api/public/media/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/takimlar'
+    | '/takimlar/$slug'
+    | '/takimlar/'
+    | '/api/public/media/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   TakimlarRoute: typeof TakimlarRouteWithChildren
+  ApiPublicMediaSplatRoute: typeof ApiPublicMediaSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -73,6 +106,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/takimlar': {
@@ -96,6 +136,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TakimlarSlugRouteImport
       parentRoute: typeof TakimlarRoute
     }
+    '/api/public/media/$': {
+      id: '/api/public/media/$'
+      path: '/api/public/media/$'
+      fullPath: '/api/public/media/$'
+      preLoaderRoute: typeof ApiPublicMediaSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -115,7 +162,9 @@ const TakimlarRouteWithChildren = TakimlarRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   TakimlarRoute: TakimlarRouteWithChildren,
+  ApiPublicMediaSplatRoute: ApiPublicMediaSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
