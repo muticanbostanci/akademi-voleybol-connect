@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as TakimlarRouteImport } from './routes/takimlar'
 import { Route as TakimlarIndexRouteImport } from './routes/takimlar.index'
 import { Route as TakimlarSlugRouteImport } from './routes/takimlar.$slug'
@@ -18,6 +19,11 @@ import { Route as ApiPublicMediaSplatRouteImport } from './routes/api/public/med
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TakimlarRoute = TakimlarRouteImport.update({
@@ -43,6 +49,7 @@ const ApiPublicMediaSplatRoute = ApiPublicMediaSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/takimlar': typeof TakimlarRouteWithChildren
   '/takimlar/$slug': typeof TakimlarSlugRoute
   '/takimlar/': typeof TakimlarIndexRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/takimlar/$slug': typeof TakimlarSlugRoute
   '/takimlar': typeof TakimlarIndexRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
@@ -57,6 +65,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/takimlar': typeof TakimlarRouteWithChildren
   '/takimlar/$slug': typeof TakimlarSlugRoute
   '/takimlar/': typeof TakimlarIndexRoute
@@ -65,12 +74,18 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/takimlar' | '/takimlar/$slug' | '/takimlar/' | '/api/public/media/$'
+    | '/'
+    | '/admin'
+    | '/takimlar'
+    | '/takimlar/$slug'
+    | '/takimlar/'
+    | '/api/public/media/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/takimlar/$slug' | '/takimlar' | '/api/public/media/$'
+  to: '/' | '/admin' | '/takimlar/$slug' | '/takimlar' | '/api/public/media/$'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/takimlar'
     | '/takimlar/$slug'
     | '/takimlar/'
@@ -79,6 +94,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   TakimlarRoute: typeof TakimlarRouteWithChildren
   ApiPublicMediaSplatRoute: typeof ApiPublicMediaSplatRoute
 }
@@ -90,6 +106,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/takimlar': {
@@ -139,6 +162,7 @@ const TakimlarRouteWithChildren = TakimlarRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   TakimlarRoute: TakimlarRouteWithChildren,
   ApiPublicMediaSplatRoute: ApiPublicMediaSplatRoute,
 }
