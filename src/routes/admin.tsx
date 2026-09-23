@@ -97,7 +97,7 @@ function Panel() {
   return <div className="grid gap-8">
     <div className="flex flex-wrap items-center justify-between gap-3">
       <p className="text-sm text-hero-muted">Yüklediğiniz görseller ve bilgiler anında sitede yayınlanır.</p>
-      <button className="btn-outline-dark" onClick={() => run("logout", async () => { await logout({ data: undefined }); }, "Çıkış yapıldı.")}><LogOut className="size-4" /> Çıkış Yap</button>
+      <button className="btn-outline-dark" onClick={() => { try { window.localStorage.removeItem("admin_auth"); } catch { /* private mode */ } run("logout", async () => { await logout({ data: undefined }); }, "Çıkış yapıldı."); }}><LogOut className="size-4" /> Çıkış Yap</button>
     </div>
     {message && <p className="rounded-md border border-hero-line bg-black/30 px-4 py-3 text-sm font-semibold text-brand-gold">{message}</p>}
 
