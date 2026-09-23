@@ -4,6 +4,8 @@ import { SiteFooter, SiteHeader, StickyWhatsApp, WhatsAppIcon, WHATSAPP_URL } fr
 import { getTeamRoster } from "@/lib/content.functions";
 
 export const Route = createFileRoute("/takimlar/$slug")({
+  staleTime: 0,
+  shouldReload: true,
   loader: async ({ params }) => { const data = await getTeamRoster({ data: { slug: params.slug } }); if (!data.team) throw notFound(); return data; },
   head: ({ loaderData }) => { const title = loaderData?.team?.name ?? "Takım Bulunamadı"; return { meta: [
     { title: `${title} | Akademi Spor Kulübü` },
