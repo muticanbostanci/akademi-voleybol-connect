@@ -36,18 +36,39 @@ function LoginForm() {
   const login = useServerFn(adminLogin);
   const queryClient = useQueryClient();
   const [error, setError] = useState("");
-  const mutation = useMutation({
-    mutationFn: (values: { username: string; password: string }) => login({ data: values }),
-    onSuccess: result => { if (result.ok) { setError(""); queryClient.invalidateQueries(); } else setError("Kullanıcı adı veya şifre hatalı."); },
-    onError: () => setError("Giriş yapılamadı, tekrar deneyin."),
-  });
-  return <form className={`${cardClass} max-w-md`} onSubmit={(event: FormEvent<HTMLFormElement>) => { event.preventDefault(); const form = new FormData(event.currentTarget); mutation.mutate({ username: String(form.get("username") ?? ""), password: String(form.get("password") ?? "") }); }}>
+  const [busy, setBusy] = useState(false);
+
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const username = String(form.get("username") ?? "").trim();
+    const password = String(form.get("password") ?? "");
+    // İstemci taraflı hızlı kontrol — hatalı bilgide sunucuya hiç gidilmez.
+    if (username !== "admin" || password !== "akademiboz2026") {
+      setError("Hatalı kullanıcı adı veya şifre!");
+      return;
+    }
+    setBusy(true); setError("");
+    try {
+      // Panelin veri işlemleri için sunucu oturumunu da kur.
+      const result = await login({ data: { username, password } });
+      if (!result.ok) { setError("Giriş yapılamadı, tekrar deneyin."); return; }
+      try { window.localStorage.setItem("admin_auth", "true"); } catch { /* private mode */ }
+      queryClient.invalidateQueries();
+    } catch {
+      setError("Giriş yapılamadı, tekrar deneyin.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return <form className={`${cardClass} max-w-md`} onSubmit={handleLogin}>
     <div className="flex items-center gap-2 text-hero-foreground"><Lock className="size-4 text-brand-gold" /><strong className="font-display text-lg">YÖNETİCİ GİRİŞİ</strong></div>
     <div className="mt-5 grid gap-4">
       <div><label className={labelClass} htmlFor="username">Kullanıcı Adı</label><input id="username" name="username" className={inputClass} autoComplete="username" required /></div>
       <div><label className={labelClass} htmlFor="password">Şifre</label><input id="password" name="password" type="password" className={inputClass} autoComplete="current-password" required /></div>
       {error && <p className="text-sm font-semibold text-brand-gold">{error}</p>}
-      <button className="btn-primary justify-center" type="submit" disabled={mutation.isPending}>{mutation.isPending ? <Loader2 className="size-4 animate-spin" /> : <Lock className="size-4" />} Giriş Yap</button>
+      <button className="btn-primary justify-center" type="submit" disabled={busy}>{busy ? <Loader2 className="size-4 animate-spin" /> : <Lock className="size-4" />} Giriş Yap</button>
     </div>
   </form>;
 }
@@ -76,7 +97,7 @@ function Panel() {
   return <div className="grid gap-8">
     <div className="flex flex-wrap items-center justify-between gap-3">
       <p className="text-sm text-hero-muted">Yüklediğiniz görseller ve bilgiler anında sitede yayınlanır.</p>
-      <button className="btn-outline-dark" onClick={() => run("logout", async () => { await logout({ data: undefined }); }, "Çıkış yapıldı.")}><LogOut className="size-4" /> Çıkış Yap</button>
+      <button className="btn-outline-dark" onClick={() => { try { window.localStorage.removeItem("admin_auth"); } catch { /* private mode */ } run("logout", async () => { await logout({ data: undefined }); }, "Çıkış yapıldı."); }}><LogOut className="size-4" /> Çıkış Yap</button>
     </div>
     {message && <p className="rounded-md border border-hero-line bg-black/30 px-4 py-3 text-sm font-semibold text-brand-gold">{message}</p>}
 
