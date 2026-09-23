@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Loader2, LogOut, Lock, Trash2, Upload } from "lucide-react";
 import { useState, type FormEvent } from "react";
@@ -75,9 +75,10 @@ function LoginForm() {
 
 function Panel() {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const data = useQuery({ queryKey: ["admin-data"], queryFn: useServerFn(adminData) });
   const logout = useServerFn(adminLogout);
-  const refresh = () => queryClient.invalidateQueries();
+  const refresh = () => { queryClient.invalidateQueries(); router.invalidate(); };
   const [busy, setBusy] = useState("");
   const [message, setMessage] = useState("");
 
