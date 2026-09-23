@@ -1,4 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, ArrowRight, Shirt, UserRound } from "lucide-react";
 import { SiteFooter, SiteHeader, StickyWhatsApp, WhatsAppIcon, WHATSAPP_URL } from "@/components/site-chrome";
 import { getTeamRoster } from "@/lib/content.functions";
@@ -17,7 +19,19 @@ export const Route = createFileRoute("/takimlar/$slug")({
 });
 
 function TeamRosterPage() {
-  const { team, players } = Route.useLoaderData();
+  const initialData = Route.useLoaderData();
+  const { slug } = Route.useParams();
+  const fetchRoster = useServerFn(getTeamRoster);
+  // Kadro her ziyarette ve sekmeye dönüşte yeniden çekilir; panelden eklenen/silinen oyuncu anında görünür.
+  const { data } = useQuery({
+    queryKey: ["team-roster", slug],
+    queryFn: () => fetchRoster({ data: { slug } }),
+    initialData,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
+  });
+  const { team, players } = data;
   if (!team) return <TeamNotFound />;
   return <main className="bg-background text-foreground"><SiteHeader /><section className="roster-hero"><img src={team.image_url ?? "/akademi-spor-kulubu-logo.png"} alt={`${team.name} takım görseli`} /><div className="hero-overlay" /><div className="relative z-10 mx-auto max-w-7xl px-5 pb-16 pt-40 lg:px-8 lg:pb-20 lg:pt-52"><Link to="/takimlar" className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-hero-muted"><ArrowLeft className="size-4" /> Tüm Takımlar</Link><p className="section-kicker text-brand-gold">{team.league}</p><h1>{team.name}</h1><p>{team.description}</p></div></section><section><div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-24"><div className="section-heading"><div><p className="section-kicker">2026 SEZONU</p><h2>OYUNCU <span>KADROSU</span></h2></div><p>Oyuncu fotoğrafları, isimleri ve forma numaraları yönetici panelinden güncellenir.</p></div>
     {players.length ? <div className="players-grid">{players.map(player => <article className="player-card" key={player.id}><div className="player-image"><img src={player.image_url ?? "/akademi-spor-kulubu-logo.png"} alt={`${player.first_name} ${player.last_name}`} loading="lazy" /><span><Shirt /> {player.jersey_number}</span></div><div><small>OYUNCU</small><h3>{player.first_name}<br /><strong>{player.last_name}</strong></h3></div></article>)}</div>
