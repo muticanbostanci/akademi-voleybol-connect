@@ -4,6 +4,8 @@ import { TeamGrid } from "@/components/team-grid";
 import { getTeams } from "@/lib/content.functions";
 
 export const Route = createFileRoute("/takimlar/")({
+  staleTime: 0,
+  shouldReload: true,
   loader: () => getTeams(),
   head: () => ({ meta: [
     { title: "Voleybol Takımlarımız | Akademi Spor Kulübü" },
