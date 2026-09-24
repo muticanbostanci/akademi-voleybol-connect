@@ -1,4 +1,4 @@
-# Akademi Spor Kulübü — Görevler
+# Akademi Atletik Spor Kulübü — Görevler
 
 - [x] Landing page (WhatsApp odaklı, form yok)
 - [x] Hero slider, Maç Merkezi, 11 sabit takım, kadro sayfaları
@@ -8,3 +8,4 @@
 - [x] Oyuncu ekleme (fotoğraf, isim, forma no) / kaldırma
 - [x] Maç & skor paneli
 - [x] Veriler ve görseller Lovable Cloud'da saklanıyor
+- [ ] Yeni logo, antrenman galerisi, maç kartları ve dinamik takım logoları
