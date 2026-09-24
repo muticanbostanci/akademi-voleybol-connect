@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, ArrowRight, Clock3, ExternalLink, Instagram, Mail, MapPin, Navigation, Pause, Phone, Play, Trophy, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock3, ExternalLink, Instagram, Mail, MapPin, Navigation, Pause, Phone, Play, Trophy, Users, Volleyball } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SiteFooter, SiteHeader, StickyWhatsApp, WhatsAppIcon, WHATSAPP_URL, INSTAGRAM_URL } from "@/components/site-chrome";
@@ -57,7 +57,10 @@ function HeroSlider({ slides }: { slides: Slide[] }) {
   </section>;
 }
 
-function TeamLogo({ name, logo }: { name: string; logo: string | null }) { return <div className="match-team"><div className="match-logo"><img src={logo ?? CLUB_LOGO} alt={`${name} logosu`} /></div><strong>{name}</strong></div>; }
+function TeamLogo({ name, logo }: { name: string; logo: string | null }) {
+  const isClub = name.toLocaleUpperCase("tr-TR").includes("AKADEMİ");
+  return <div className="match-team"><div className="match-logo">{logo || isClub ? <img src={logo ?? CLUB_LOGO} alt={`${name} logosu`} /> : <Volleyball aria-label={`${name} logosu henüz eklenmedi`} />}</div><strong>{name}</strong></div>;
+}
 
 const FIXTURE_URL = "https://ankara.voleyboliltemsilciligi.com/";
 
