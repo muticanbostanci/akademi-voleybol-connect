@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ChevronDown, Instagram, Menu, Phone, Volleyball, X } from "lucide-react";
 import { useState } from "react";
 import teams from "@/data/teamsData.json";
+import { CLUB_LOGO, CLUB_NAME } from "@/lib/brand";
 
 export const WHATSAPP_URL = "https://wa.me/905336802206?text=Merhaba,%20kulübünüz%20ve%20voleybol%20antrenmanları%20hakkında%20bilgi%20almak%20istiyorum.";
 export const INSTAGRAM_URL = "https://www.instagram.com/akademi.sporkulubu/";
@@ -14,9 +15,9 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   return <header className="site-header absolute inset-x-0 top-0 z-40 border-b border-hero-line">
     <div className="mx-auto grid h-20 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 lg:h-24 lg:px-8">
-      <Link to="/" className="flex min-w-0 items-center gap-3" aria-label="Akademi Spor Kulübü ana sayfa">
-        <img src="/akademi-spor-kulubu-logo.png" alt="Akademi Spor Kulübü" className="logo-glow h-16 w-24 shrink-0 object-contain lg:h-20 lg:w-32" />
-        <div className="hidden min-w-0 sm:block"><strong className="block font-display text-sm text-hero-foreground lg:text-base">AKADEMİ SPOR KULÜBÜ</strong><span className="flex items-center gap-1.5 text-xs font-semibold text-hero-muted"><Volleyball className="size-3.5" /> VOLEYBOL</span></div>
+      <Link to="/" className="flex min-w-0 items-center gap-3" aria-label={`${CLUB_NAME} ana sayfa`}>
+        <img src={CLUB_LOGO} alt={CLUB_NAME} className="logo-glow h-16 w-28 shrink-0 object-contain lg:h-20 lg:w-36" />
+        <div className="hidden min-w-0 sm:block"><strong className="block max-w-52 font-display text-sm leading-tight text-hero-foreground lg:text-base">{CLUB_NAME}</strong><span className="flex items-center gap-1.5 text-xs font-semibold text-hero-muted"><Volleyball className="size-3.5" /> VOLEYBOL</span></div>
       </Link>
       <nav className="hidden items-center gap-6 lg:flex" aria-label="Ana navigasyon">
         <div className="nav-dropdown group"><Link className="nav-link flex items-center gap-1" to="/takimlar">Takımlarımız <ChevronDown className="size-3.5" /></Link><div className="nav-dropdown-panel">{teams.map(team => <Link key={team.slug} to="/takimlar/$slug" params={{ slug: team.slug }}>{team.name}</Link>)}</div></div>
@@ -32,7 +33,7 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
-  return <footer className="border-t border-hero-line bg-section-dark text-hero-muted"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 md:grid-cols-[1.5fr_1fr_1fr] lg:px-8"><div className="flex items-center gap-4"><img src="/akademi-spor-kulubu-logo.png" alt="Akademi Spor Kulübü logosu" className="logo-glow h-20 w-28 object-contain" /><p className="max-w-xs text-sm">Voleybolun birleştirici gücüyle geleceğin sporcularını yetiştiriyoruz.</p></div><div><strong className="footer-title">HIZLI BAĞLANTILAR</strong><nav className="mt-4 grid gap-2 text-sm"><Link to="/takimlar">Takımlarımız</Link><Link to="/" hash="salon">Salonumuz</Link><Link to="/" hash="iletisim">İletişim</Link><Link to="/admin">Yönetici Girişi</Link></nav></div><div><strong className="footer-title">BİZİ TAKİP EDİN</strong><div className="mt-4 flex gap-3"><a className="social-icon" href={INSTAGRAM_URL} target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram /></a><a className="social-icon" href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="WhatsApp"><WhatsAppIcon /></a></div></div></div><div className="border-t border-hero-line px-5 py-5 text-center text-xs">© 2026 Akademi Spor Kulübü. Tüm hakları saklıdır. • www.akademisporkulubu.com</div></footer>;
+  return <footer className="border-t border-hero-line bg-section-dark text-hero-muted"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 md:grid-cols-[1.5fr_1fr_1fr] lg:px-8"><div className="flex items-center gap-4"><img src={CLUB_LOGO} alt={`${CLUB_NAME} logosu`} className="logo-glow h-24 w-36 object-contain" /><p className="max-w-xs text-sm">Voleybolun birleştirici gücüyle geleceğin sporcularını yetiştiriyoruz.</p></div><div><strong className="footer-title">HIZLI BAĞLANTILAR</strong><nav className="mt-4 grid gap-2 text-sm"><Link to="/takimlar">Takımlarımız</Link><Link to="/" hash="salon">Salonumuz</Link><Link to="/" hash="iletisim">İletişim</Link><Link to="/admin">Yönetici Girişi</Link></nav></div><div><strong className="footer-title">BİZİ TAKİP EDİN</strong><div className="mt-4 flex gap-3"><a className="social-icon" href={INSTAGRAM_URL} target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram /></a><a className="social-icon" href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="WhatsApp"><WhatsAppIcon /></a></div></div></div><div className="border-t border-hero-line px-5 py-5 text-center text-xs">© 2026 {CLUB_NAME}. Tüm hakları saklıdır. • www.akademisporkulubu.com</div></footer>;
 }
 
 export function StickyWhatsApp() { return <a className="sticky-whatsapp" href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="WhatsApp'tan bilgi alın"><span className="hidden sm:inline">Bilgi Almak İstiyorum</span><span className="sticky-icon"><WhatsAppIcon className="size-7" /></span></a>; }

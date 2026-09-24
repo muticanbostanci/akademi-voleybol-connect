@@ -137,12 +137,21 @@ export const deletePlayer = createServerFn({ method: "POST" })
 
 /** Maç & skor güncelleme */
 export const saveMatch = createServerFn({ method: "POST" })
-  .inputValidator((data: { slot: string; match_date: string; match_time: string; venue: string; home_name: string; away_name: string; score: string; sets: string }) => data)
+  .inputValidator((data: FormData) => data)
   .handler(async ({ data }) => {
     const { requireAdmin } = await import("./admin-session.server");
     await requireAdmin();
-    const { adminClient } = await import("./supabase-admin.server");
-    const { slot, ...fields } = data;
+    const { adminClient, uploadMedia } = await import("./supabase-admin.server");
+    const slot = text(data, "slot");
+    if (!slot) throw new Error("Maç türü bulunamadı.");
+    const homeFile = fileOf(data, "home_logo_file");
+    const awayFile = fileOf(data, "away_logo_file");
+    const fields = {
+      match_date: text(data, "match_date"), match_time: text(data, "match_time"), venue: text(data, "venue"),
+      home_name: text(data, "home_name"), away_name: text(data, "away_name"), score: text(data, "score"), sets: text(data, "sets"),
+      home_logo: homeFile ? await uploadMedia("mac-logolari", homeFile) : text(data, "home_logo") || null,
+      away_logo: awayFile ? await uploadMedia("mac-logolari", awayFile) : text(data, "away_logo") || null,
+    };
     const { error } = await adminClient().from("matches").update({ ...fields, updated_at: new Date().toISOString() }).eq("slot", slot);
     if (error) throw new Error(error.message);
     return { ok: true };

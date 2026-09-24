@@ -8,9 +8,9 @@ import { adminData, adminLogin, adminLogout, adminStatus, addPlayer, addSlide, d
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [
-    { title: "Yönetici Girişi | Akademi Spor Kulübü" },
-    { name: "description", content: "Akademi Spor Kulübü site yönetim paneli: takım fotoğrafları, slider görselleri, oyuncu kadrosu ve maç skorları." },
-    { property: "og:title", content: "Yönetici Girişi | Akademi Spor Kulübü" },
+    { title: "Yönetici Girişi | Akademi Atletik Spor Kulübü" },
+    { name: "description", content: "Akademi Atletik Spor Kulübü site yönetim paneli: takım fotoğrafları, slider görselleri, oyuncu kadrosu ve maç skorları." },
+    { property: "og:title", content: "Yönetici Girişi | Akademi Atletik Spor Kulübü" },
     { property: "og:description", content: "Kulüp içeriklerini güncellemek için yönetici paneli." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
     { name: "robots", content: "noindex" },
@@ -161,16 +161,13 @@ function Panel() {
     <section className={cardClass}>
       <h2 className="font-display text-xl text-hero-foreground">MAÇ & SKOR PANELİ</h2>
       <div className="mt-4 grid gap-6 lg:grid-cols-2">
-        {matches.map(match => <form key={match.slot} className="grid gap-3 rounded-lg border border-hero-line p-4" onSubmit={event => { event.preventDefault(); const form = new FormData(event.currentTarget); run(`match-${match.slot}`, () => saveMatch({ data: {
-          slot: match.slot,
-          match_date: String(form.get("match_date") ?? ""), match_time: String(form.get("match_time") ?? ""), venue: String(form.get("venue") ?? ""),
-          home_name: String(form.get("home_name") ?? ""), away_name: String(form.get("away_name") ?? ""),
-          score: String(form.get("score") ?? ""), sets: String(form.get("sets") ?? ""),
-        } }), `${match.label} güncellendi.`); }}>
+        {matches.map(match => <form key={match.slot} className="grid gap-3 rounded-lg border border-hero-line p-4" onSubmit={event => { event.preventDefault(); const form = new FormData(event.currentTarget); form.set("slot", match.slot); run(`match-${match.slot}`, () => saveMatch({ data: form }), `${match.label} güncellendi.`); }}>
           <strong className="font-display text-base text-brand-gold">{match.label}</strong>
           <div><label className={labelClass}>Tarih</label><input className={inputClass} name="match_date" defaultValue={match.match_date} /></div>
           <div className="grid gap-3 sm:grid-cols-2"><div><label className={labelClass}>Saat</label><input className={inputClass} name="match_time" defaultValue={match.match_time} /></div><div><label className={labelClass}>Salon</label><input className={inputClass} name="venue" defaultValue={match.venue} /></div></div>
           <div className="grid gap-3 sm:grid-cols-2"><div><label className={labelClass}>Ev Sahibi</label><input className={inputClass} name="home_name" defaultValue={match.home_name} /></div><div><label className={labelClass}>Rakip</label><input className={inputClass} name="away_name" defaultValue={match.away_name} /></div></div>
+           <div className="grid gap-3 sm:grid-cols-2"><div><label className={labelClass}>Ev Sahibi Logo URL</label><input className={inputClass} name="home_logo" defaultValue={match.home_logo ?? ""} placeholder="https://…" /></div><div><label className={labelClass}>Rakip Takım Logo URL</label><input className={inputClass} name="away_logo" defaultValue={match.away_logo ?? ""} placeholder="https://…" /></div></div>
+           <div className="grid gap-3 sm:grid-cols-2"><div><label className={labelClass}>Ev Sahibi Logosu Yükle</label><input className={inputClass} type="file" name="home_logo_file" accept="image/*" /></div><div><label className={labelClass}>Rakip Takım Logosu Yükle</label><input className={inputClass} type="file" name="away_logo_file" accept="image/*" /></div></div>
           <div className="grid gap-3 sm:grid-cols-2"><div><label className={labelClass}>Skor</label><input className={inputClass} name="score" defaultValue={match.score} placeholder="3–0" /></div><div><label className={labelClass}>Set Skorları</label><input className={inputClass} name="sets" defaultValue={match.sets} placeholder="25–22, 25–22, 25–14" /></div></div>
           <button className="btn-primary justify-center" type="submit" disabled={busy === `match-${match.slot}`}>{busy === `match-${match.slot}` ? <Loader2 className="size-4 animate-spin" /> : null} Kaydet</button>
         </form>)}
