@@ -8,4 +8,4 @@
 - [x] Oyuncu ekleme (fotoğraf, isim, forma no) / kaldırma
 - [x] Maç & skor paneli
 - [x] Veriler ve görseller Lovable Cloud'da saklanıyor
-- [ ] Yeni logo, antrenman galerisi, maç kartları ve dinamik takım logoları
+- [x] Yeni logo, antrenman galerisi, maç kartları ve dinamik takım logoları

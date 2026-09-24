@@ -1,20 +1,25 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, ArrowRight, CalendarDays, Clock3, ExternalLink, Instagram, Mail, MapPin, Navigation, Pause, Phone, Play, Trophy, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SiteFooter, SiteHeader, StickyWhatsApp, WhatsAppIcon, WHATSAPP_URL, INSTAGRAM_URL } from "@/components/site-chrome";
 import { TeamGrid } from "@/components/team-grid";
 import { getHomeContent, type Match, type Slide, type Team } from "@/lib/content.functions";
+import { CLUB_LOGO, CLUB_NAME } from "@/lib/brand";
 
 const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=Kaz%C4%B1m+Orbay%2C+342.+Cd.+No%3A46%2C+06630+Mamak%2FAnkara";
 
 export const Route = createFileRoute("/")({
+  staleTime: 0,
+  shouldReload: true,
   loader: () => getHomeContent(),
   head: () => ({ meta: [
-    { title: "Akademi Spor Kulübü | Ankara Voleybol Akademisi" },
-    { name: "description", content: "Akademi Spor Kulübü takımları, maçları, oyuncu kadroları ve Ankara voleybol antrenmanları." },
-    { property: "og:title", content: "Akademi Spor Kulübü | Ankara Voleybol Akademisi" },
-    { property: "og:description", content: "Geleceğin voleybolcuları Akademi Spor Kulübü'nde yetişiyor." },
+    { title: "Akademi Atletik Spor Kulübü | Ankara Voleybol Akademisi" },
+    { name: "description", content: "Akademi Atletik Spor Kulübü takımları, maçları, oyuncu kadroları ve Ankara voleybol antrenmanları." },
+    { property: "og:title", content: "Akademi Atletik Spor Kulübü | Ankara Voleybol Akademisi" },
+    { property: "og:description", content: "Geleceğin voleybolcuları Akademi Atletik Spor Kulübü'nde yetişiyor." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ]}), component: Index,
   errorComponent: () => <main className="grid min-h-screen place-items-center bg-section-dark px-5 text-center text-hero-foreground"><p>Sayfa içeriği yüklenemedi. Lütfen yenileyin.</p></main>,
@@ -31,7 +36,7 @@ function HeroSlider({ slides }: { slides: Slide[] }) {
   }, [playing, slides.length]);
   if (!slides.length) return null;
   const go = (index: number) => setActive((index + slides.length) % slides.length);
-  return <section className="hero-slider" aria-roledescription="carousel" aria-label="Akademi Spor Kulübü tanıtım görselleri">
+  return <section className="hero-slider" aria-roledescription="carousel" aria-label={`${CLUB_NAME} tanıtım görselleri`}>
     {slides.map((slide, index) => <article key={slide.id} className={`hero-slide ${index === active ? "is-active" : ""}`} aria-hidden={index !== active}>
       <img src={slide.image_url} alt={slide.title} className="hero-slide-image" style={{ objectPosition: slide.position }} fetchPriority={index === 0 ? "high" : "auto"} />
       <div className="hero-overlay" />
@@ -43,19 +48,37 @@ function HeroSlider({ slides }: { slides: Slide[] }) {
   </section>;
 }
 
-function TeamLogo({ name, logo }: { name: string; logo: string | null }) { return <div className="match-team"><div className="match-logo"><img src={logo ?? "/akademi-spor-kulubu-logo.png"} alt={`${name} logosu`} /></div><strong>{name}</strong></div>; }
+function TeamLogo({ name, logo }: { name: string; logo: string | null }) { return <div className="match-team"><div className="match-logo"><img src={logo ?? CLUB_LOGO} alt={`${name} logosu`} /></div><strong>{name}</strong></div>; }
+
+const FIXTURE_URL = "https://ankara.voleyboliltemsilciligi.com/";
+
+function MatchLinks() {
+  return <nav className="match-tabs" aria-label="Lig bağlantıları"><a href={FIXTURE_URL} target="_blank" rel="noreferrer">PUAN DURUMU</a><a href={FIXTURE_URL} target="_blank" rel="noreferrer">FİKSTÜR</a></nav>;
+}
+
+function MatchCard({ match, latest = false }: { match: Match; latest?: boolean }) {
+  const middle = latest ? match.score || "—" : match.match_date || "TARİH YAKINDA";
+  return <article className="match-card">
+    <MatchLinks />
+    <div className="match-card-heading"><span className="match-tournament"><Trophy /></span><h3>{latest ? "SON MAÇ SONUCU" : "GELECEK MAÇ"}</h3><span aria-hidden="true" /></div>
+    <div className="match-versus"><TeamLogo name={match.home_name} logo={match.home_logo} /><div className="match-center"><b>{middle}</b>{latest ? <small>{match.sets.split(",").map(set => set.trim()).filter(Boolean).join("  •  ")}</small> : <small>{match.match_time}{match.venue ? ` • ${match.venue}` : ""}</small>}</div><TeamLogo name={match.away_name} logo={match.away_logo} /></div>
+  </article>;
+}
 
 function Matches({ matches }: { matches: Match[] }) {
   const upcoming = matches.find(match => match.slot === "upcoming");
   const latest = matches.find(match => match.slot === "latest");
-  return <section className="matches-band"><div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20"><div className="matches-heading"><div><p className="section-kicker text-brand-gold">SAHADAKİ HEYECAN</p><h2>MAÇ MERKEZİ</h2></div><a href="https://ankara.voleyboliltemsilciligi.com/" target="_blank" rel="noreferrer">Tüm fikstürü gör <ExternalLink /></a></div><div className="matches-grid">
-    {upcoming && <article className="match-card"><header><span>{upcoming.label}</span><CalendarDays /></header><div className="match-date"><strong>{upcoming.match_date}</strong><span>{upcoming.match_time} • {upcoming.venue}</span></div><div className="match-versus"><TeamLogo name={upcoming.home_name} logo={upcoming.home_logo} /><b>VS</b><TeamLogo name={upcoming.away_name} logo={upcoming.away_logo} /></div></article>}
-    {latest && <article className="match-card is-latest"><header><span>{latest.label}</span><Trophy /></header><div className="match-date"><strong>{latest.match_date}</strong><span>Tamamlandı</span></div><div className="match-versus"><TeamLogo name={latest.home_name} logo={latest.home_logo} /><div className="match-score"><b>{latest.score}</b><small>{latest.sets.split(",").map(set => set.trim()).filter(Boolean).join("  •  ")}</small></div><TeamLogo name={latest.away_name} logo={latest.away_logo} /></div></article>}
+  return <section className="matches-band"><div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20"><div className="matches-heading"><div><p className="section-kicker text-brand-gold">SAHADAKİ HEYECAN</p><h2>MAÇ MERKEZİ</h2></div><a href={FIXTURE_URL} target="_blank" rel="noreferrer">Tüm fikstürü gör <ExternalLink /></a></div><div className="matches-grid">
+    {upcoming && <MatchCard match={upcoming} />}
+    {latest && <MatchCard match={latest} latest />}
   </div></div></section>;
 }
 
 function Index() {
-  const { slides, matches, teams } = Route.useLoaderData() as { slides: Slide[]; matches: Match[]; teams: Team[] };
+  const initialData = Route.useLoaderData() as { slides: Slide[]; matches: Match[]; teams: Team[] };
+  const fetchHomeContent = useServerFn(getHomeContent);
+  const { data } = useQuery({ queryKey: ["home-content"], queryFn: fetchHomeContent, initialData, staleTime: 0, refetchOnMount: "always", refetchOnWindowFocus: true });
+  const { slides, matches, teams } = data;
   return <main id="top" className="overflow-hidden bg-background text-foreground"><SiteHeader /><HeroSlider slides={slides} /><Matches matches={matches} />
   <section id="takimlar" className="section-light"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"><div className="section-heading"><div><p className="section-kicker">SAHADAKİ GÜCÜMÜZ</p><h2>TAKIMLARIMIZ <span>&</span><br />YAŞ GRUPLARIMIZ</h2></div><div><p>Her yaşta doğru eğitim, güçlü takım ruhu ve sürdürülebilir sportif gelişim.</p><Link to="/takimlar" className="mt-5 inline-flex items-center gap-2 font-bold text-brand-red">Tüm takımları gör <ArrowRight className="size-4" /></Link></div></div><div className="mt-12"><TeamGrid teams={teams} compact /></div></div></section>
   <section id="salon" className="section-dark"><div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:px-8 lg:py-28"><div><p className="section-kicker text-brand-gold">ANTRENMAN ALANIMIZ</p><h2 className="mt-3 font-display text-4xl font-black leading-tight text-hero-foreground sm:text-5xl">OYUNUN KALBİ<br />ÇAĞRIBEY'DE ATIYOR</h2><p className="mt-6 max-w-lg leading-relaxed text-hero-muted">Tüm takım antrenmanlarımız Çağrıbey Anadolu Lisesi Spor Salonu'nda gerçekleşiyor.</p><div className="mt-8 grid gap-4 sm:grid-cols-2"><div className="info-line"><MapPin /><span><small>Adres</small>Kazım Orbay, 342. Cd. No:46<br />06630 Mamak / Ankara</span></div><div className="info-line"><Clock3 /><span><small>Saatler</small>Yaş grubuna göre<br />WhatsApp'tan öğrenin</span></div></div><div className="mt-8 flex flex-col gap-3 sm:flex-row"><a className="btn-primary" href={MAPS_URL} target="_blank" rel="noreferrer"><Navigation /> Yol Tarifi Al</a><a className="btn-outline-dark" href={WHATSAPP_URL} target="_blank" rel="noreferrer"><WhatsAppIcon /> Saatleri Sor</a></div></div><a href={MAPS_URL} target="_blank" rel="noreferrer" className="map-card"><div className="map-grid" /><div className="map-rings"><span /><span /><span /></div><MapPin className="relative z-10 size-14 fill-brand-red text-brand-red" /><div className="relative z-10 mt-4 px-6 text-center"><strong>Mamak / Ankara</strong><span>Kazım Orbay, 342. Cd. No:46, 06630</span></div><div className="map-action">Google Haritalar'da Aç <ExternalLink /></div></a></div></section>
