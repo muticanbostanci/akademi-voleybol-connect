@@ -28,18 +28,37 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 }
 
 
+// Browser bundles have no `process`, so every lookup is guarded.
+function readEnv(...names: string[]): string | undefined {
+  const viteEnv = (typeof import.meta !== 'undefined' ? import.meta.env : undefined) as
+    | Record<string, string | undefined>
+    | undefined;
+  const nodeEnv = typeof process !== 'undefined' ? process.env : undefined;
+
+  for (const name of names) {
+    const value = viteEnv?.[name] || nodeEnv?.[name];
+    if (value) return value;
+  }
+  return undefined;
+}
+
 function createSupabaseClient() {
-  // Use import.meta.env for client-side (Vite build-time replacement)
-  // Fall back to process.env with Next.js-compatible NEXT_PUBLIC_ variables for SSR
-  const SUPABASE_URL = import.meta.env['VITE_SUPABASE_URL'] || process.env['NEXT_PUBLIC_SUPABASE_URL'];
-  const SUPABASE_PUBLISHABLE_KEY = import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'] || process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'];
+  const SUPABASE_URL = readEnv('VITE_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_URL', 'SUPABASE_URL');
+  const SUPABASE_PUBLISHABLE_KEY = readEnv(
+    'VITE_SUPABASE_PUBLISHABLE_KEY',
+    'VITE_SUPABASE_ANON_KEY',
+    'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY',
+    'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+    'SUPABASE_PUBLISHABLE_KEY',
+    'SUPABASE_ANON_KEY',
+  );
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
     const missing = [
-      ...(!SUPABASE_URL ? ['NEXT_PUBLIC_SUPABASE_URL'] : []),
-      ...(!SUPABASE_PUBLISHABLE_KEY ? ['NEXT_PUBLIC_SUPABASE_ANON_KEY'] : []),
+      ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
+      ...(!SUPABASE_PUBLISHABLE_KEY ? ['SUPABASE_PUBLISHABLE_KEY / SUPABASE_ANON_KEY'] : []),
     ];
-    const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Connect Supabase in Lovable Cloud.`;
+    const message = `Supabase Baglanti Hatasi: ${missing.join(', ')} bulunamadi. Connect Supabase in Lovable Cloud.`;
     console.error(`[Supabase] ${message}`);
     throw new Error(message);
   }
