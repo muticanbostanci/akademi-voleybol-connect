@@ -7,6 +7,7 @@
 @theme inline {
   --font-sans: "Barlow", sans-serif;
   --font-display: "Barlow Condensed", sans-serif;
+  --font-hero: "Oswald", "Barlow Condensed", sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -86,7 +87,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @utility btn-whatsapp-small { display: inline-flex; height: 2.5rem; align-items: center; gap: .5rem; border-radius: .25rem; padding: 0 .9rem; background: var(--whatsapp); color: var(--hero-foreground); font-size: .75rem; font-weight: 800; &:hover { transform: translateY(-2px); } }
 @utility mobile-nav { display: grid; gap: 1rem; border-top: 1px solid var(--hero-line); background: linear-gradient(180deg, oklch(0.19 0.075 20), oklch(0.32 0.13 25)); padding: 1.5rem; color: var(--hero-foreground); font-size: .9rem; font-weight: 700; text-align: center; }
 @utility hero-section { position: relative; min-height: 760px; background: var(--section-dark); }
-@utility hero-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, oklch(0.1 0.04 257 / .98) 0%, oklch(0.1 0.04 257 / .87) 35%, oklch(0.1 0.04 257 / .25) 70%, oklch(0.1 0.04 257 / .38) 100%); }
+  @utility hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, oklch(0.1 0.04 257 / .18) 0%, transparent 26%, transparent 100%); }
 @utility eyebrow { display: flex; align-items: center; gap: .65rem; color: var(--brand-gold); font-size: .75rem; font-weight: 800; letter-spacing: .1em; & span { width: 2.5rem; height: 2px; background: var(--brand-red); } }
 @utility btn-whatsapp { display: inline-flex; min-height: 3.5rem; align-items: center; justify-content: center; gap: .65rem; border-radius: .25rem; padding: 0 1.35rem; background: var(--whatsapp); color: var(--hero-foreground); font-weight: 800; box-shadow: 0 12px 30px oklch(0.42 0.17 145 / .25); &:hover { transform: translateY(-2px); } }
 @utility btn-ghost-hero { display: inline-flex; min-height: 3.5rem; align-items: center; justify-content: center; gap: .6rem; border: 1px solid var(--hero-line); border-radius: .25rem; padding: 0 1.35rem; color: var(--hero-foreground); font-weight: 700; &:hover { border-color: var(--brand-gold); color: var(--brand-gold); } }
@@ -120,13 +121,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 @keyframes float-pulse { 0%, 100% { transform: translateY(0); box-shadow: 0 10px 35px oklch(0.2 0.04 250 / .3); } 50% { transform: translateY(-4px); box-shadow: 0 14px 40px oklch(0.6 0.18 145 / .35); } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .sticky-whatsapp { animation: none; } * { transition-duration: 0.01ms !important; } }
-@media (max-width: 640px) { .hero-overlay { background: linear-gradient(180deg, oklch(0.1 0.04 257 / .55) 0%, transparent 42%, oklch(0.1 0.04 257 / .18) 100%); } }
+  @media (max-width: 640px) { .hero-overlay { background: linear-gradient(180deg, oklch(0.1 0.04 257 / .32) 0%, transparent 34%, transparent 100%); } }
 @utility nav-dropdown { position: relative; padding-block: 1.75rem; }
 @utility nav-dropdown-panel { position: absolute; left: 50%; top: calc(100% - .35rem); display: grid; width: 19rem; translate: -50% -.35rem; visibility: hidden; opacity: 0; border-top: 3px solid var(--brand-gold); background: var(--section-dark); padding: .6rem; box-shadow: 0 18px 45px oklch(0.08 0.03 257 / .4); transition: 180ms ease; & a { padding: .55rem .7rem; color: var(--hero-muted); font-size: .78rem; font-weight: 650; &:hover { background: var(--hero-glass); color: var(--brand-gold); } } .group:hover & { translate: -50% 0; visibility: visible; opacity: 1; } }
 @utility hero-slider { position: relative; min-height: 720px; overflow: hidden; background: var(--section-dark); @media (min-width: 1024px) { min-height: 820px; } }
 @utility hero-slide { position: absolute; inset: 0; visibility: hidden; opacity: 0; transition: opacity 800ms ease, visibility 800ms ease; &.is-active { visibility: visible; opacity: 1; } }
 @utility hero-slide-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-@utility hero-gallery-title { position: absolute; z-index: 20; top: 8.5rem; left: 50%; width: min(calc(100% - 2.5rem), 80rem); translate: -50% 0; color: var(--hero-foreground); font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3.2rem); font-weight: 800; text-align: center; text-shadow: 0 3px 18px oklch(0.08 0.03 257 / .7); }
+  @utility hero-gallery-title { position: absolute; z-index: 20; top: 7.5rem; left: 1.75rem; max-width: min(calc(100% - 3rem), 40rem); color: var(--hero-foreground); font-family: var(--font-hero); font-size: clamp(1.35rem, 2.6vw, 2.25rem); font-weight: 700; line-height: 1.05; letter-spacing: .015em; text-transform: uppercase; text-shadow: 0 2px 14px oklch(0.08 0.03 257 / .55); @media (min-width: 1024px) { top: 9rem; left: 3rem; } }
 @utility hero-controls { position: absolute; z-index: 20; right: 1.25rem; bottom: 1.5rem; display: flex; align-items: center; gap: .3rem; border: 1px solid var(--hero-line); background: var(--hero-glass); padding: .35rem; color: var(--hero-foreground); backdrop-filter: blur(12px); & button { color: inherit; &:hover { background: var(--hero-line); color: var(--brand-gold); } } @media (min-width: 768px) { right: 2rem; bottom: 2rem; } }
 @utility hero-dots { display: flex; align-items: center; gap: .35rem; padding-inline: .3rem; & button { width: 1.35rem; height: .18rem; background: var(--hero-line); transition: width 200ms ease, background 200ms ease; &.is-active { width: 2.4rem; background: var(--brand-gold); } } }
 @utility matches-band { position: relative; background: var(--section-dark); color: var(--hero-foreground); }
