@@ -25,8 +25,23 @@ const labelClass = "mb-1 block text-xs font-bold uppercase tracking-wide text-he
 
 function AdminPage() {
   const status = useQuery({ queryKey: ["admin-status"], queryFn: useServerFn(adminStatus) });
-  if (status.isLoading) return <Shell><div className="flex items-center gap-2 text-hero-muted"><Loader2 className="size-4 animate-spin" /> Yükleniyor…</div></Shell>;
-  return <Shell>{status.data?.admin ? <Panel /> : <LoginForm />}</Shell>;
+  
+  // Tarayıcı hafızasında admin_auth kaydı var mı diye kontrol et
+  const [isAuth, setIsAuth] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.localStorage.getItem("admin_auth") === "true";
+    }
+    return false;
+  });
+
+  if (status.isLoading) return <Shell><div className="flex items-center gap-2 text-hero-muted"><Loader2 className="size-4 animate-spin" /> Yükleniyor...</div></Shell>;
+  
+  // Eğer ne tarayıcıda yetki bayrağı var ne de sunucu admin onay vermişse LoginForm göster
+  if (!isAuth && !status.data?.admin) {
+    return <Shell><LoginForm /></Shell>;
+  }
+
+  return <Shell><Panel /></Shell>;
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
