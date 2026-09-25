@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, ArrowRight, Clock3, ExternalLink, Instagram, Mail, MapPin, Navigation, Pause, Phone, Play, Trophy, Users, Volleyball } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock3, ExternalLink, Instagram, Mail, MapPin, Navigation, Pause, Phone, Play, Trophy, Volleyball } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SiteFooter, SiteHeader, StickyWhatsApp, WhatsAppIcon, WHATSAPP_URL, INSTAGRAM_URL } from "@/components/site-chrome";
@@ -45,14 +45,12 @@ function HeroSlider({ slides }: { slides: Slide[] }) {
   }, [playing, slides.length]);
   if (!slides.length) return null;
   const go = (index: number) => setActive((index + slides.length) % slides.length);
-  return <section className="hero-slider" aria-roledescription="carousel" aria-label={`${CLUB_NAME} tanıtım görselleri`}>
+  return <section className="hero-slider" aria-roledescription="carousel" aria-label={`${CLUB_NAME} antrenman görselleri`}>
     {slides.map((slide, index) => <article key={slide.id} className={`hero-slide ${index === active ? "is-active" : ""}`} aria-hidden={index !== active}>
-      <img src={slide.image_url} alt={slide.title} className="hero-slide-image" style={{ objectPosition: slide.position }} fetchPriority={index === 0 ? "high" : "auto"} />
+      <img src={slide.image_url} alt={slide.title || "Antrenmandan bir kare"} className="hero-slide-image" loading={index === 0 ? "eager" : "lazy"} fetchPriority={index === 0 ? "high" : "auto"} />
       <div className="hero-overlay" />
-      <div className="relative z-10 mx-auto flex min-h-[720px] max-w-7xl items-end px-5 pb-28 pt-32 sm:items-center sm:pb-16 lg:min-h-[820px] lg:px-8">
-        <div className="max-w-3xl"><div className="eyebrow"><span /> {slide.eyebrow}</div><h1 className="mt-5 font-display text-5xl font-black leading-[0.94] text-hero-foreground sm:text-6xl lg:text-8xl">{slide.title}</h1><p className="mt-6 max-w-xl text-base leading-relaxed text-hero-muted sm:text-lg">{slide.description}</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><a className="btn-whatsapp" href={WHATSAPP_URL} target="_blank" rel="noreferrer"><WhatsAppIcon /> WhatsApp'tan Bilgi Al <ArrowRight /></a><Link className="btn-ghost-hero" to="/takimlar">Takımları İncele <ArrowRight /></Link></div><div className="mt-9 flex flex-wrap gap-x-8 gap-y-3 border-t border-hero-line pt-6 text-xs font-bold uppercase text-hero-muted"><span className="flex items-center gap-2"><Users className="size-4 text-brand-gold" /> 11 Takım Grubu</span><span className="flex items-center gap-2"><Trophy className="size-4 text-brand-gold" /> Lisanslı Sporcular</span><span className="flex items-center gap-2"><MapPin className="size-4 text-brand-gold" /> Ankara</span></div></div>
-      </div>
     </article>)}
+    <h1 className="hero-gallery-title">Antrenmandan Kareler</h1>
     <div className="hero-controls"><Button variant="ghost" size="icon" onClick={() => go(active - 1)} aria-label="Önceki görsel"><ArrowLeft /></Button><div className="hero-dots">{slides.map((slide, index) => <button key={slide.id} onClick={() => go(index)} className={index === active ? "is-active" : ""} aria-label={`${index + 1}. görsel`} aria-current={index === active ? "true" : undefined} />)}</div><Button variant="ghost" size="icon" onClick={() => setPlaying(value => !value)} aria-label={playing ? "Kaydırıcıyı duraklat" : "Kaydırıcıyı oynat"}>{playing ? <Pause /> : <Play />}</Button><Button variant="ghost" size="icon" onClick={() => go(active + 1)} aria-label="Sonraki görsel"><ArrowRight /></Button></div>
   </section>;
 }
