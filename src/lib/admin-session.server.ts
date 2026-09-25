@@ -3,6 +3,9 @@ import { createHash, timingSafeEqual } from "node:crypto";
 
 type AdminSession = { admin?: boolean };
 
+const DEFAULT_ADMIN_USERNAME = "admin";
+const DEFAULT_ADMIN_PASSWORD = "akademiboz2026";
+
 function config() {
   return {
     password: process.env["SESSION_SECRET"]!,
@@ -32,9 +35,10 @@ export async function requireAdmin() {
 }
 
 export async function signInAdmin(username: string, password: string) {
-  const expectedUser = process.env["ADMIN_USERNAME"];
-  const expectedPass = process.env["ADMIN_PASSWORD"];
-  if (!expectedUser || !expectedPass) throw new Error("Yönetici bilgileri yapılandırılmadı.");
+  const expectedUser =
+    import.meta.env["VITE_ADMIN_USERNAME"] || process.env["ADMIN_USERNAME"] || DEFAULT_ADMIN_USERNAME;
+  const expectedPass =
+    import.meta.env["VITE_ADMIN_PASSWORD"] || process.env["ADMIN_PASSWORD"] || DEFAULT_ADMIN_PASSWORD;
   if (!matches(username.trim(), expectedUser) || !matches(password, expectedPass)) return false;
   const session = await getAdminSession();
   await session.update({ admin: true });
