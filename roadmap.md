@@ -9,5 +9,5 @@
 - [x] Maç & skor paneli
 - [x] Veriler ve görseller Lovable Cloud'da saklanıyor
 - [x] Yeni logo, antrenman galerisi, maç kartları ve dinamik takım logoları
-- [ ] Slider sadeleştirme, öncelikli ilk görsel ve yönetici yüklemelerinde WebP optimizasyonu
+- [x] Slider sadeleştirme, öncelikli ilk görsel ve yönetici yüklemelerinde WebP optimizasyonu
 - [ ] Güncel kaynak kodu ZIP paketi
