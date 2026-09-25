@@ -10,4 +10,4 @@
 - [x] Veriler ve görseller Lovable Cloud'da saklanıyor
 - [x] Yeni logo, antrenman galerisi, maç kartları ve dinamik takım logoları
 - [x] Slider sadeleştirme, öncelikli ilk görsel ve yönetici yüklemelerinde WebP optimizasyonu
-- [ ] Güncel kaynak kodu ZIP paketi
+- [x] Güncel kaynak kodu ZIP paketi
