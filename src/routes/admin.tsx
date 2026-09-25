@@ -5,6 +5,7 @@ import { Loader2, LogOut, Lock, Trash2, Upload } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { adminData, adminLogin, adminLogout, adminStatus, addPlayer, addSlide, deletePlayer, deleteSlide, saveMatch, saveTeamPhoto } from "@/lib/admin.functions";
+import { optimizedFormData } from "@/lib/image-optimization";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [
@@ -106,7 +107,7 @@ function Panel() {
       <h2 className="font-display text-xl text-hero-foreground">TAKIM FOTOĞRAFLARI</h2>
       <p className="mt-1 text-sm text-hero-muted">Her takım için toplu kadro fotoğrafı yükleyin; takım sayfasının en üstünde görünür.</p>
       <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {teams.map(team => <form key={team.slug} className="rounded-lg border border-hero-line p-4" onSubmit={event => { event.preventDefault(); const form = new FormData(event.currentTarget); run(`team-${team.slug}`, () => saveTeamPhoto({ data: form }), `${team.name} fotoğrafı güncellendi.`); }}>
+        {teams.map(team => <form key={team.slug} className="rounded-lg border border-hero-line p-4" onSubmit={event => { event.preventDefault(); const form = event.currentTarget; run(`team-${team.slug}`, async () => saveTeamPhoto({ data: await optimizedFormData(form) }), `${team.name} fotoğrafı güncellendi.`); }}>
           <input type="hidden" name="slug" value={team.slug} />
           <strong className="block text-sm text-hero-foreground">{team.name}</strong>
           {team.image_url && <img src={team.image_url} alt={`${team.name} mevcut fotoğrafı`} className="mt-3 h-28 w-full rounded-md object-cover" />}
@@ -118,25 +119,22 @@ function Panel() {
 
     <section className={cardClass}>
       <h2 className="font-display text-xl text-hero-foreground">HERO SLIDER GÖRSELLERİ</h2>
-      <form className="mt-4 grid gap-3 md:grid-cols-2" onSubmit={event => { event.preventDefault(); const form = event.currentTarget; const payload = new FormData(form); run("slide", async () => { await addSlide({ data: payload }); form.reset(); }, "Slider görseli eklendi."); }}>
+      <form className="mt-4 grid gap-3" onSubmit={event => { event.preventDefault(); const form = event.currentTarget; run("slide", async () => { await addSlide({ data: await optimizedFormData(form) }); form.reset(); }, "Antrenman görseli eklendi."); }}>
         <div><label className={labelClass}>Görsel</label><input className={inputClass} type="file" name="photo" accept="image/*" required /></div>
-        <div><label className={labelClass}>Üst Etiket</label><input className={inputClass} name="eyebrow" placeholder="ANTRENMAN • GELİŞİM" /></div>
-        <div><label className={labelClass}>Başlık</label><input className={inputClass} name="title" placeholder="Başlık" /></div>
-        <div><label className={labelClass}>Açıklama</label><input className={inputClass} name="description" placeholder="Kısa açıklama" /></div>
-        <button className="btn-primary justify-center md:col-span-2" type="submit" disabled={busy === "slide"}>{busy === "slide" ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />} Slider'a Ekle</button>
+        <button className="btn-primary justify-center" type="submit" disabled={busy === "slide"}>{busy === "slide" ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />} Antrenmandan Karelere Ekle</button>
       </form>
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {slides.map(slide => <div key={slide.id} className="rounded-lg border border-hero-line p-3">
+        {slides.map((slide, index) => <div key={slide.id} className="rounded-lg border border-hero-line p-3">
           <img src={slide.image_url} alt={slide.title || "Slider görseli"} className="h-24 w-full rounded object-cover" />
-          <p className="mt-2 line-clamp-2 text-xs text-hero-muted">{slide.title}</p>
-          <button className="btn-outline-dark mt-2 w-full justify-center" onClick={() => run(`slide-${slide.id}`, () => deleteSlide({ data: { id: slide.id } }), "Görsel kaldırıldı.")}><Trash2 className="size-4" /> Kaldır</button>
+          <p className="mt-2 line-clamp-2 text-xs text-hero-muted">{index === 0 ? "Sabit ilk görsel" : "Antrenmandan Kareler"}</p>
+          {index > 0 && <button className="btn-outline-dark mt-2 w-full justify-center" onClick={() => run(`slide-${slide.id}`, () => deleteSlide({ data: { id: slide.id } }), "Görsel kaldırıldı.")}><Trash2 className="size-4" /> Kaldır</button>}
         </div>)}
       </div>
     </section>
 
     <section className={cardClass}>
       <h2 className="font-display text-xl text-hero-foreground">OYUNCU KADROSU</h2>
-      <form className="mt-4 grid gap-3 md:grid-cols-5" onSubmit={event => { event.preventDefault(); const form = event.currentTarget; const payload = new FormData(form); run("player", async () => { await addPlayer({ data: payload }); form.reset(); }, "Oyuncu eklendi."); }}>
+      <form className="mt-4 grid gap-3 md:grid-cols-5" onSubmit={event => { event.preventDefault(); const form = event.currentTarget; run("player", async () => { await addPlayer({ data: await optimizedFormData(form) }); form.reset(); }, "Oyuncu eklendi."); }}>
         <div className="md:col-span-2"><label className={labelClass}>Takım</label><select className={inputClass} name="team_slug" required>{teams.map(team => <option key={team.slug} value={team.slug}>{team.name}</option>)}</select></div>
         <div><label className={labelClass}>Forma No</label><input className={inputClass} name="jersey_number" placeholder="7" /></div>
         <div><label className={labelClass}>İsim</label><input className={inputClass} name="first_name" required /></div>
@@ -161,7 +159,7 @@ function Panel() {
     <section className={cardClass}>
       <h2 className="font-display text-xl text-hero-foreground">MAÇ & SKOR PANELİ</h2>
       <div className="mt-4 grid gap-6 lg:grid-cols-2">
-        {matches.map(match => <form key={match.slot} className="grid gap-3 rounded-lg border border-hero-line p-4" onSubmit={event => { event.preventDefault(); const form = new FormData(event.currentTarget); form.set("slot", match.slot); run(`match-${match.slot}`, () => saveMatch({ data: form }), `${match.label} güncellendi.`); }}>
+        {matches.map(match => <form key={match.slot} className="grid gap-3 rounded-lg border border-hero-line p-4" onSubmit={event => { event.preventDefault(); const form = event.currentTarget; run(`match-${match.slot}`, async () => { const payload = await optimizedFormData(form); payload.set("slot", match.slot); return saveMatch({ data: payload }); }, `${match.label} güncellendi.`); }}>
           <strong className="font-display text-base text-brand-gold">{match.label}</strong>
           <div><label className={labelClass}>Tarih</label><input className={inputClass} name="match_date" defaultValue={match.match_date} /></div>
           <div className="grid gap-3 sm:grid-cols-2"><div><label className={labelClass}>Saat</label><input className={inputClass} name="match_time" defaultValue={match.match_time} /></div><div><label className={labelClass}>Salon</label><input className={inputClass} name="venue" defaultValue={match.venue} /></div></div>
