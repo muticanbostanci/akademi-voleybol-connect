@@ -10,15 +10,6 @@ import { getHomeContent, type Match, type Slide, type Team } from "@/lib/content
 import { CLUB_LOGO, CLUB_NAME } from "@/lib/brand";
 
 const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=Kaz%C4%B1m+Orbay%2C+342.+Cd.+No%3A46%2C+06630+Mamak%2FAnkara";
-const TRAINING_SLIDES: Slide[] = [
-  { id: "training-01", image_url: "/antrenman/antrenman-01.jpg", eyebrow: "AKADEMİ ATLETİK • TAKIM RUHU", title: "BİRLİKTE DAHA GÜÇLÜYÜZ", description: "Disiplin, dayanışma ve oyun sevgisiyle her antrenmanda birlikte gelişiyoruz.", position: "center", sort_order: 1001 },
-  { id: "training-02", image_url: "/antrenman/antrenman-02.jpg", eyebrow: "DENEYİMLİ ANTRENÖRLER", title: "DOĞRU EĞİTİMLE GELİŞİM", description: "Teknik gelişimi güçlü iletişim ve takım kültürüyle buluşturuyoruz.", position: "center", sort_order: 1002 },
-  { id: "training-03", image_url: "/antrenman/antrenman-03.jpg", eyebrow: "ANTRENMAN • ODAK • GELİŞİM", title: "HER GÜN BİR ADIM İLERİ", description: "Sahadaki her tekrar, geleceğin güçlü sporcularını hazırlıyor.", position: "center", sort_order: 1003 },
-  { id: "training-04", image_url: "/antrenman/antrenman-04.jpg", eyebrow: "SAHADA ENERJİ", title: "OYUNUN İÇİNDE BÜYÜ", description: "Voleybol sevgisini disiplinli çalışma ve gerçek takım ruhuyla yaşatıyoruz.", position: "center", sort_order: 1004 },
-  { id: "training-05", image_url: "/antrenman/antrenman-05.jpg", eyebrow: "HER SPORCUYA ALAN", title: "KENDİ GÜCÜNÜ KEŞFET", description: "Farklı yaş ve seviyelere uygun çalışmalarla her sporcunun gelişimini destekliyoruz.", position: "center", sort_order: 1005 },
-  { id: "training-06", image_url: "/antrenman/antrenman-06.jpg", eyebrow: "HAZIRLIK • KARARLILIK", title: "HER TOPA HAZIR", description: "Odak, çeviklik ve özgüven sahadaki güçlü duruşun temelini oluşturuyor.", position: "center", sort_order: 1006 },
-  { id: "training-07", image_url: "/antrenman/antrenman-07.jpg", eyebrow: "TAKIM • TUTKU • HEDEF", title: "AYNI HEDEFE BAKIYORUZ", description: "Ankara'da voleybolun birleştirici gücüyle geleceğe hazırlanıyoruz.", position: "center", sort_order: 1007 },
-];
 
 export const Route = createFileRoute("/")({
   staleTime: 0,
@@ -43,15 +34,16 @@ function HeroSlider({ slides }: { slides: Slide[] }) {
     const timer = window.setInterval(() => setActive(value => (value + 1) % slides.length), 6000);
     return () => window.clearInterval(timer);
   }, [playing, slides.length]);
-  if (!slides.length) return null;
+  const current = slides.length ? active % slides.length : 0;
   const go = (index: number) => setActive((index + slides.length) % slides.length);
   return <section className="hero-slider" aria-roledescription="carousel" aria-label={`${CLUB_NAME} antrenman görselleri`}>
-    {slides.map((slide, index) => <article key={slide.id} className={`hero-slide ${index === active ? "is-active" : ""}`} aria-hidden={index !== active}>
-      <img src={slide.image_url} alt={slide.title || "Antrenmandan bir kare"} className="hero-slide-image" loading={index === 0 ? "eager" : "lazy"} fetchPriority={index === 0 ? "high" : "auto"} />
+    {slides.map((slide, index) => <article key={slide.id} className={`hero-slide ${index === current ? "is-active" : ""}`} aria-hidden={index !== current}>
+      <img src={slide.image_url} alt={slide.title || "Antrenmandan bir kare"} className="hero-slide-image" style={{ objectPosition: slide.position || "center" }} loading={index === 0 ? "eager" : "lazy"} fetchPriority={index === 0 ? "high" : "auto"} decoding="async" />
       <div className="hero-overlay" />
     </article>)}
     <h1 className="hero-gallery-title">Antrenmandan Kareler</h1>
-    <div className="hero-controls"><Button variant="ghost" size="icon" onClick={() => go(active - 1)} aria-label="Önceki görsel"><ArrowLeft /></Button><div className="hero-dots">{slides.map((slide, index) => <button key={slide.id} onClick={() => go(index)} className={index === active ? "is-active" : ""} aria-label={`${index + 1}. görsel`} aria-current={index === active ? "true" : undefined} />)}</div><Button variant="ghost" size="icon" onClick={() => setPlaying(value => !value)} aria-label={playing ? "Kaydırıcıyı duraklat" : "Kaydırıcıyı oynat"}>{playing ? <Pause /> : <Play />}</Button><Button variant="ghost" size="icon" onClick={() => go(active + 1)} aria-label="Sonraki görsel"><ArrowRight /></Button></div>
+    {!slides.length && <p className="hero-empty">Yeni antrenman kareleri yakında burada.</p>}
+    {slides.length > 1 && <div className="hero-controls"><Button variant="ghost" size="icon" onClick={() => go(active - 1)} aria-label="Önceki görsel"><ArrowLeft /></Button><div className="hero-dots">{slides.map((slide, index) => <button key={slide.id} onClick={() => go(index)} className={index === active ? "is-active" : ""} aria-label={`${index + 1}. görsel`} aria-current={index === active ? "true" : undefined} />)}</div><Button variant="ghost" size="icon" onClick={() => setPlaying(value => !value)} aria-label={playing ? "Kaydırıcıyı duraklat" : "Kaydırıcıyı oynat"}>{playing ? <Pause /> : <Play />}</Button><Button variant="ghost" size="icon" onClick={() => go(active + 1)} aria-label="Sonraki görsel"><ArrowRight /></Button></div>}
   </section>;
 }
 
@@ -89,7 +81,7 @@ function Index() {
   const fetchHomeContent = useServerFn(getHomeContent);
   const { data } = useQuery({ queryKey: ["home-content"], queryFn: fetchHomeContent, initialData, staleTime: 0, refetchOnMount: "always", refetchOnWindowFocus: true });
   const { matches, teams } = data;
-  const slides = [...data.slides, ...TRAINING_SLIDES];
+  const slides = data.slides;
   return <main id="top" className="overflow-hidden bg-background text-foreground"><SiteHeader /><HeroSlider slides={slides} /><Matches matches={matches} />
   <section id="takimlar" className="section-light"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"><div className="section-heading"><div><p className="section-kicker">SAHADAKİ GÜCÜMÜZ</p><h2>TAKIMLARIMIZ <span>&</span><br />YAŞ GRUPLARIMIZ</h2></div><div><p>Her yaşta doğru eğitim, güçlü takım ruhu ve sürdürülebilir sportif gelişim.</p><Link to="/takimlar" className="mt-5 inline-flex items-center gap-2 font-bold text-brand-red">Tüm takımları gör <ArrowRight className="size-4" /></Link></div></div><div className="mt-12"><TeamGrid teams={teams} compact /></div></div></section>
   <section id="salon" className="section-dark"><div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:px-8 lg:py-28"><div><p className="section-kicker text-brand-gold">ANTRENMAN ALANIMIZ</p><h2 className="mt-3 font-display text-4xl font-black leading-tight text-hero-foreground sm:text-5xl">OYUNUN KALBİ<br />ÇAĞRIBEY'DE ATIYOR</h2><p className="mt-6 max-w-lg leading-relaxed text-hero-muted">Tüm takım antrenmanlarımız Çağrıbey Anadolu Lisesi Spor Salonu'nda gerçekleşiyor.</p><div className="mt-8 grid gap-4 sm:grid-cols-2"><div className="info-line"><MapPin /><span><small>Adres</small>Kazım Orbay, 342. Cd. No:46<br />06630 Mamak / Ankara</span></div><div className="info-line"><Clock3 /><span><small>Saatler</small>Yaş grubuna göre<br />WhatsApp'tan öğrenin</span></div></div><div className="mt-8 flex flex-col gap-3 sm:flex-row"><a className="btn-primary" href={MAPS_URL} target="_blank" rel="noreferrer"><Navigation /> Yol Tarifi Al</a><a className="btn-outline-dark" href={WHATSAPP_URL} target="_blank" rel="noreferrer"><WhatsAppIcon /> Saatleri Sor</a></div></div><a href={MAPS_URL} target="_blank" rel="noreferrer" className="map-card"><div className="map-grid" /><div className="map-rings"><span /><span /><span /></div><MapPin className="relative z-10 size-14 fill-brand-red text-brand-red" /><div className="relative z-10 mt-4 px-6 text-center"><strong>Mamak / Ankara</strong><span>Kazım Orbay, 342. Cd. No:46, 06630</span></div><div className="map-action">Google Haritalar'da Aç <ExternalLink /></div></a></div></section>
