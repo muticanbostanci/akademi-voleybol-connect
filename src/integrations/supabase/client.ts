@@ -29,17 +29,14 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 
 
 function createSupabaseClient() {
-  // Use import.meta.env for client-side (Vite build-time replacement)
-  // Fall back to process.env with Next.js-compatible NEXT_PUBLIC_ variables for SSR
-  const SUPABASE_URL = import.meta.env['VITE_SUPABASE_URL'] || process.env['NEXT_PUBLIC_SUPABASE_URL'];
-  const SUPABASE_PUBLISHABLE_KEY = import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'] || process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'];
+  const SUPABASE_URL = import.meta.env['VITE_SUPABASE_URL'] as string | undefined;
+  // This project's .env defines VITE_SUPABASE_PUBLISHABLE_KEY, not VITE_SUPABASE_ANON_KEY.
+  const SUPABASE_PUBLISHABLE_KEY = (import.meta.env['VITE_SUPABASE_ANON_KEY'] ||
+    import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY']) as string | undefined;
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-    const missing = [
-      ...(!SUPABASE_URL ? ['NEXT_PUBLIC_SUPABASE_URL'] : []),
-      ...(!SUPABASE_PUBLISHABLE_KEY ? ['NEXT_PUBLIC_SUPABASE_ANON_KEY'] : []),
-    ];
-    const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Connect Supabase in Lovable Cloud.`;
+    const message =
+      'Supabase bağlantı değişkenleri eksik! Ortam değişkenlerini (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY) kontrol edin.';
     console.error(`[Supabase] ${message}`);
     throw new Error(message);
   }
