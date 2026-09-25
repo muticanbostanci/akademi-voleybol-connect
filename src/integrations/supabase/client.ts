@@ -28,37 +28,15 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 }
 
 
-// Browser bundles have no `process`, so every lookup is guarded.
-function readEnv(...names: string[]): string | undefined {
-  const viteEnv = (typeof import.meta !== 'undefined' ? import.meta.env : undefined) as
-    | Record<string, string | undefined>
-    | undefined;
-  const nodeEnv = typeof process !== 'undefined' ? process.env : undefined;
-
-  for (const name of names) {
-    const value = viteEnv?.[name] || nodeEnv?.[name];
-    if (value) return value;
-  }
-  return undefined;
-}
-
 function createSupabaseClient() {
-  const SUPABASE_URL = readEnv('VITE_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_URL', 'SUPABASE_URL');
-  const SUPABASE_PUBLISHABLE_KEY = readEnv(
-    'VITE_SUPABASE_PUBLISHABLE_KEY',
-    'VITE_SUPABASE_ANON_KEY',
-    'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY',
-    'NEXT_PUBLIC_SUPABASE_ANON_KEY',
-    'SUPABASE_PUBLISHABLE_KEY',
-    'SUPABASE_ANON_KEY',
-  );
+  const SUPABASE_URL = import.meta.env['VITE_SUPABASE_URL'] as string | undefined;
+  // This project's .env defines VITE_SUPABASE_PUBLISHABLE_KEY, not VITE_SUPABASE_ANON_KEY.
+  const SUPABASE_PUBLISHABLE_KEY = (import.meta.env['VITE_SUPABASE_ANON_KEY'] ||
+    import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY']) as string | undefined;
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-    const missing = [
-      ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
-      ...(!SUPABASE_PUBLISHABLE_KEY ? ['SUPABASE_PUBLISHABLE_KEY / SUPABASE_ANON_KEY'] : []),
-    ];
-    const message = `Supabase Baglanti Hatasi: ${missing.join(', ')} bulunamadi. Connect Supabase in Lovable Cloud.`;
+    const message =
+      'Supabase bağlantı değişkenleri eksik! Ortam değişkenlerini (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY) kontrol edin.';
     console.error(`[Supabase] ${message}`);
     throw new Error(message);
   }
