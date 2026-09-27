@@ -164,8 +164,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center;
+    object-fit: cover;
+    object-position: 50% 20%; /* Odak noktasını yukarı ve ortaya çekiyoruz, böylece sağda solda siyah boşluk kalmaz, kafalar da kesilmez */
   }
 
   & > div {
