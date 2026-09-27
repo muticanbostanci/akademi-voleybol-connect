@@ -155,27 +155,27 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @utility roster-cta { display: grid; align-items: center; gap: 1rem; margin-top: 2.5rem; background: var(--section-dark); padding: 1.4rem; color: var(--hero-foreground); & > svg { width: 2rem; color: var(--brand-gold); } & strong { font-family: var(--font-display); font-size: 1.35rem; text-transform: uppercase; } & p { color: var(--hero-muted); font-size: .8rem; } @media (min-width: 768px) { grid-template-columns: auto 1fr auto; padding: 1.7rem; } }
 @utility roster-hero {
   position: relative;
-  min-height: 520px;
+  min-height: 680px; /* Yüksekliği biraz daha artırdık */
   overflow: hidden;
   background: var(--section-dark);
   color: var(--hero-foreground);
   display: flex;
   align-items: flex-end;
-  padding-bottom: 3.5rem;
+  padding-bottom: 4rem;
   & > img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
-    filter: brightness(0.75);
+    object-position: center 30%; /* Fotoğrafın üst/orta kısmına odaklanır */
+    filter: brightness(0.8);
   }
   &::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(14,20,38,0.2) 0%, rgba(14,20,38,0.85) 80%);
+    background: linear-gradient(180deg, rgba(14,20,38,0.15) 0%, rgba(14,20,38,0.85) 85%);
     z-index: 1;
   }
   & > div {
