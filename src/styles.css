@@ -148,7 +148,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @utility team-category-copy { position: absolute; inset-inline: 1.35rem; bottom: 1.35rem; z-index: 2; & > span { color: var(--brand-gold); font-size: .68rem; font-weight: 800; text-transform: uppercase; } & h3 { margin-top: .35rem; font-family: var(--font-display); font-size: 2rem; font-weight: 900; line-height: 1; text-transform: uppercase; } & p { margin-top: .65rem; color: var(--hero-muted); font-size: .82rem; line-height: 1.4; } & strong { display: flex; align-items: center; gap: .5rem; margin-top: 1rem; font-size: .72rem; text-transform: uppercase; & svg { width: 1rem; color: var(--brand-gold); } } }
 @utility team-category-ball { position: absolute; z-index: 2; top: 1rem; right: 1rem; width: 1.5rem; color: var(--brand-gold); }
 @utility inner-hero { background: linear-gradient(115deg, var(--section-dark), var(--brand-red-dark)); color: var(--hero-foreground); & h1 { margin-top: .5rem; font-family: var(--font-display); font-size: 3.8rem; font-weight: 900; line-height: .95; } & p:last-child { max-width: 40rem; margin-top: 1rem; color: var(--hero-muted); line-height: 1.6; } @media (min-width: 768px) { & h1 { font-size: 5.5rem; } } }
-@utility roster-hero { position: relative; min-height: 570px; overflow: hidden; background: var(--section-dark); color: var(--hero-foreground); & > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; } & h1 { margin-top: .4rem; max-width: 55rem; font-family: var(--font-display); font-size: 3.7rem; font-weight: 900; line-height: .92; text-transform: uppercase; } & p:last-child { max-width: 35rem; margin-top: 1rem; color: var(--hero-muted); font-size: 1.05rem; } @media (min-width: 768px) { & h1 { font-size: 6rem; } } }
 @utility players-grid { display: grid; gap: 1px; margin-top: 3rem; background: var(--border); grid-template-columns: repeat(2, minmax(0,1fr)); @media (min-width: 768px) { grid-template-columns: repeat(4, minmax(0,1fr)); } }
 @utility player-card { min-width: 0; background: var(--card); & > div:last-child { padding: 1rem; } & small { color: var(--brand-red); font-size: .62rem; font-weight: 800; } & h3 { margin-top: .35rem; font-family: var(--font-display); font-size: 1.45rem; line-height: 1; text-transform: uppercase; } & h3 strong { font-weight: 900; } }
 @utility player-image { position: relative; aspect-ratio: 3 / 4; overflow: hidden; background: var(--secondary); & img { width: 100%; height: 100%; object-fit: contain; padding: 14%; filter: saturate(.75); } & span { position: absolute; right: .6rem; bottom: .6rem; display: flex; align-items: center; gap: .3rem; background: var(--brand-red); padding: .4rem .55rem; color: var(--hero-foreground); font-family: var(--font-display); font-size: 1.2rem; font-weight: 900; & svg { width: .9rem; } } }
@@ -165,8 +164,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: top center; /* Odak noktasını en üste sabitliyoruz, böylece kafalar ve saçlar kesinlikle kesilmeyecek */
+    object-fit: contain;
+    object-position: center;
   }
 
   & > div {
