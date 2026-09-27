@@ -165,15 +165,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: top; /* Kafaların ve saçların tam görünmesi için en üste hizaladık */
-    /* Karanlık efekt (brightness) buradan tamamen silindi */
+    object-fit: contain; /* Fotoğrafın hiçbir yeri kırpılmaz, tamamı görünür */
+    object-position: center;
   }
 
-  /* Arka plandaki karanlık geçiş efekti (gradient) tamamen kaldırıldı */
-
   & > div {
-    position: absolute; /* Yazıyı ortadaki karmaşadan kurtarıp eski yerine sabitliyoruz */
+    position: absolute;
     bottom: 2rem;
     left: 1.5rem;
     z-index: 2;
@@ -189,7 +186,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
     font-weight: 900;
     line-height: 0.95;
     text-transform: uppercase;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.85); /* Arka plan aydınlık olacağı için yazı okunsun diye gölge eklendi */
+    text-shadow: 0 2px 12px rgba(0,0,0,0.85);
   }
 
   & p:last-child {
@@ -204,7 +201,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
     min-height: 600px;
     & > div {
       bottom: 3rem;
-      left: 3rem; /* Masaüstünde yazıyı daha ferah bir sol alta alıyoruz */
+      left: 3rem;
     }
     & h1 { font-size: 5rem; }
   }
