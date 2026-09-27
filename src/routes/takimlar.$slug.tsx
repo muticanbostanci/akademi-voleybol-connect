@@ -38,7 +38,7 @@ function TeamRosterPage() {
 <img 
   src={team.image_url ?? CLUB_LOGO} 
   alt={`${team.name} takım görseli`} 
-  className="w-full h-full object-contain object-[center_30%]" 
+  className="w-full h-full object-contain object-[center_20%]" 
 />
   <div className="absolute inset-0 bg-gradient-to-t from-background via-black/50 to-black/30 z-1" />
   <div className="relative z-10 mx-auto max-w-7xl px-5 pb-16 pt-40 lg:px-8 lg:pb-20 lg:pt-52">
