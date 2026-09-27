@@ -169,7 +169,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center 20%; /* Burayı kafaların görünmesi için yukarıdan aşağıya doğru ayarladık */
     filter: brightness(0.85);
   }
 
@@ -214,6 +214,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
     padding-bottom: 4rem;
     & h1 { font-size: 5rem; }
   }
+}
 }
 @media (max-width: 640px) { .matches-heading { align-items: flex-start; flex-direction: column; } .match-versus { grid-template-columns: minmax(0,1fr) minmax(7rem,.85fr) minmax(0,1fr); gap: .2rem; padding-inline: .5rem; } .match-team strong { font-size: .68rem; } .match-center b { font-size: 1.5rem; } }
 @media (prefers-reduced-motion: reduce) { .hero-slide { transition: none; } .team-category-card > img { transition: none; } }
