@@ -154,7 +154,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @utility roster-cta { display: grid; align-items: center; gap: 1rem; margin-top: 2.5rem; background: var(--section-dark); padding: 1.4rem; color: var(--hero-foreground); & > svg { width: 2rem; color: var(--brand-gold); } & strong { font-family: var(--font-display); font-size: 1.35rem; text-transform: uppercase; } & p { color: var(--hero-muted); font-size: .8rem; } @media (min-width: 768px) { grid-template-columns: auto 1fr auto; padding: 1.7rem; } }
 @utility roster-hero {
   position: relative;
-  min-height: 520px;
+  min-height: 640px; /* Alanın yüksekliğini artırarak fotoğrafa daha çok dikey alan açıyoruz */
   overflow: hidden;
   background: var(--section-dark);
   color: var(--hero-foreground);
@@ -165,7 +165,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 20%; /* Odak noktasını yukarı ve ortaya çekiyoruz, böylece sağda solda siyah boşluk kalmaz, kafalar da kesilmez */
+    object-position: center 15%; /* Odak noktasını yukarıda tutarak çocukların kafalarının kesilmesini engelliyoruz */
   }
 
   & > div {
@@ -197,13 +197,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
 
   @media (min-width: 768px) {
-    min-height: 600px;
+    min-height: 700px; /* Büyük ekranlarda alanı daha da ferahlatıyoruz */
     & > div {
       bottom: 3rem;
       left: 3rem;
     }
     & h1 { font-size: 5rem; }
   }
+}
 }
 @media (max-width: 640px) { .matches-heading { align-items: flex-start; flex-direction: column; } .match-versus { grid-template-columns: minmax(0,1fr) minmax(7rem,.85fr) minmax(0,1fr); gap: .2rem; padding-inline: .5rem; } .match-team strong { font-size: .68rem; } .match-center b { font-size: 1.5rem; } }
 @media (prefers-reduced-motion: reduce) { .hero-slide { transition: none; } .team-category-card > img { transition: none; } }
