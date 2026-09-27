@@ -35,11 +35,11 @@ function TeamRosterPage() {
   const { team, players } = data;
   if (!team) return <TeamNotFound />;
 <section className="roster-hero relative min-h-[500px] lg:min-h-[580px] overflow-hidden bg-section-dark text-hero-foreground">
-  <img 
-    src={team.image_url ?? CLUB_LOGO} 
-    alt={`${team.name} takım görseli`} 
-    className="absolute inset-0 w-full h-full object-cover object-center" 
-  />
+<img 
+  src={team.image_url ?? CLUB_LOGO} 
+  alt={`${team.name} takım görseli`} 
+  className="w-full h-full object-contain object-[center_30%]" 
+/>
   <div className="absolute inset-0 bg-gradient-to-t from-background via-black/50 to-black/30 z-1" />
   <div className="relative z-10 mx-auto max-w-7xl px-5 pb-16 pt-40 lg:px-8 lg:pb-20 lg:pt-52">
     <Link to="/takimlar" className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-hero-muted">
